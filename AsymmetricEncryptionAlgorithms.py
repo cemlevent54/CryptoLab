@@ -4,6 +4,10 @@ from Crypto.Random import get_random_bytes
 from Crypto.Signature import DSS
 from Crypto.Hash import SHA256
 from Crypto.Util import number
+from binascii import hexlify, unhexlify
+from Crypto.Util.number import inverse
+import sympy
+import random
 
 
 class AsymmetricEncryptionAlgorithms:
@@ -40,15 +44,5 @@ class AsymmetricEncryptionAlgorithms:
             return {"shared_secret": shared_secret_a, "p": p, "g": g}
         else:
             raise ValueError("Anahtar değişimi başarısız oldu!")
-
-    def elgamal_encrypt(self, plaintext):
-        # ElGamal Şifreleme
-        p = number.getPrime(256)
-        g = number.getRandomRange(2, p - 1)
-        x = number.getRandomRange(1, p - 1)  # Özel anahtar
-        h = pow(g, x, p)  # Genel anahtar
-
-        k = number.getRandomRange(1, p - 1)  # Rastgele değer
-        c1 = pow(g, k, p)
-        c2 = (pow(h, k, p) * int.from_bytes(plaintext.encode(), 'big')) % p
-        return {"c1": c1, "c2": c2, "p": p, "g": g, "h": h, "x": x}
+    
+    
