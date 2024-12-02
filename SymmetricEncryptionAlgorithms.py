@@ -1,7 +1,7 @@
 import os
 from Crypto.Cipher import AES, DES, DES3, Blowfish, ARC4, ChaCha20
 from Crypto.Util.Padding import pad
-
+from twofish import Twofish
 
 class SymmetricEncryptionAlgorithms:
     def aes_encrypt(self, plaintext, key):
@@ -33,6 +33,18 @@ class SymmetricEncryptionAlgorithms:
         cipher = ChaCha20.new(key=key)
         ciphertext = cipher.nonce + cipher.encrypt(plaintext.encode())
         return ciphertext
+    
+    # twofish algorithm will be added.
+    def twofish_encrypt(self, plaintext, key):
+        """
+        Twofish şifreleme fonksiyonu
+        """
+        cipher = Twofish(key)
+        
+        # Padding ekle (16 byte blok uzunluğu için)
+        padded_text = pad(plaintext.encode(), 16)  # Twofish blok boyutu 16 byte
+        ciphertext = b''.join([cipher.encrypt(padded_text[i:i + 16]) for i in range(0, len(padded_text), 16)])
+        return ciphertext
 
 
 # Key size information for reference
@@ -41,6 +53,7 @@ KEY_SIZES = {
     'des': 8,       # 8 bytes = 64 bits
     'des3': 24,     # 24 bytes = 192 bits
     'blowfish': 16, # Up to 448 bits
+    'twofish' : 16, # 16 bytes = 128 bits
     'rc4': 16,      # Variable, 16 bytes used here
     'chacha20': 32, # 32 bytes = 256 bits
 }

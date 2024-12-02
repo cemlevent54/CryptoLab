@@ -1,6 +1,6 @@
 from Crypto.Cipher import AES, DES, DES3, Blowfish, ARC4, ChaCha20
 from Crypto.Util.Padding import unpad
-
+from twofish import Twofish
 
 class SymmetricDecryptionAlgorithms:
     def aes_decrypt(self, ciphertext, key):
@@ -37,3 +37,14 @@ class SymmetricDecryptionAlgorithms:
         cipher = ChaCha20.new(key=key, nonce=nonce)
         plaintext = cipher.decrypt(ciphertext[8:])
         return plaintext.decode()
+    
+    # twofish decrypt algorithm will be added.
+    def twofish_decrypt(self, ciphertext, key):
+        """
+        Twofish şifre çözme fonksiyonu
+        """
+        cipher = Twofish(key)
+
+        # Şifre çözme ve padding kaldırma
+        decrypted = b''.join([cipher.decrypt(ciphertext[i:i + 16]) for i in range(0, len(ciphertext), 16)])
+        return unpad(decrypted, 16).decode()  # Padding kaldırılır ve orijinal metin döndürülür
