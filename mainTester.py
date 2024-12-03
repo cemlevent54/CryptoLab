@@ -1,13 +1,19 @@
 import os
-from SymmetricEncryptionAlgorithms import SymmetricEncryptionAlgorithms, KEY_SIZES
-from SymmetricDecryptionAlgorithms import SymmetricDecryptionAlgorithms
-from AsymmetricEncryptionAlgorithms import AsymmetricEncryptionAlgorithms
-from AsymmetricDecryptionAlgorithms import AsymmetricDecryptionAlgorithms
-from OldEncryptionAlgorithms import OldEncryptionAlgorithms, DecryptionAlgorithms
+from SymmetricAlgorithms.SymmetricEncryptionAlgorithms import SymmetricEncryptionAlgorithms, KEY_SIZES
+from SymmetricAlgorithms.SymmetricDecryptionAlgorithms import SymmetricDecryptionAlgorithms
+from AsymmetricAlgorithms.AsymmetricEncryptionAlgorithms import AsymmetricEncryptionAlgorithms
+from AsymmetricAlgorithms.AsymmetricDecryptionAlgorithms import AsymmetricDecryptionAlgorithms
+from OldAlgorithms.OldEncryptionAlgorithms import OldEncryptionAlgorithms, DecryptionAlgorithms
 from Cryptodome.PublicKey import RSA, DSA
-from CompositeEncryptionAlgorithms import CompositeEncryptionAlgorithms
-from CompositeDecryptionAlgorithms import CompositeDecryptionAlgorithms
+from CompositeAlgorithms.CompositeEncryptionAlgorithms import CompositeEncryptionAlgorithms
+from CompositeAlgorithms.CompositeDecryptionAlgorithms import CompositeDecryptionAlgorithms
 from Crypto.PublicKey import RSA
+
+from QuantumAlgorithms.QuantumEncryptionAlgorithms import QuantumEncryptionAlgorithms
+from QuantumAlgorithms.QuantumDecryptionAlgorithms import QuantumDecryptionAlgorithms
+# QuantumEncryptionAlgorithms.py dosyasındaki örnek PUBLIC_KEY'i içe aktarın
+from QuantumAlgorithms.QuantumEncryptionAlgorithms import PUBLIC_KEY
+
 
 def save_public_key_to_file(public_key, filename="public_key.pem"):
     """
@@ -69,6 +75,8 @@ def main():
     asymmetric_decrypt = AsymmetricDecryptionAlgorithms()
     composite_encrypt = CompositeEncryptionAlgorithms()
     composite_decrypt = CompositeDecryptionAlgorithms()
+    quantum_encrypt = QuantumEncryptionAlgorithms()
+    quantum_decrypt = QuantumDecryptionAlgorithms()
     generated_keys = {}  # Rastgele oluşturulan anahtarları saklamak için bir sözlük
 
     while True:
@@ -360,6 +368,113 @@ def main():
                     except Exception as e:
                         print(f"Hatalı anahtar dosyası veya içerik: {e}")
                         print("Lütfen tekrar deneyin.")
+        
+        # Modern algoritmalar için işlemler
+        elif choice in ['19', '20']:
+            if choice == '19':  # AES-GCM
+                from ModernAlgorithms.ModernEncryptionAlgorithms import AESGCMEncryption
+                from ModernAlgorithms.ModernDecryptionAlgorithms import AESGCMDecryption
+
+                # AES anahtarını oluştur
+                aes_key = AESGCMEncryption.generate_aes_key()
+                print("\nAES anahtarı oluşturuldu ve bellekte tutuluyor.")
+
+                # Kullanıcıdan metni al
+                # text = input("Metni girin: ")
+
+                # Şifreleme işlemi
+                encrypted_data = AESGCMEncryption.aes_gcm_encrypt(text, aes_key)
+                print("\nAES-GCM Şifrelenmiş Veri:", encrypted_data)
+
+                print("\nŞifre çözme işlemi başlıyor.")
+                try:
+                    # Şifre çözme işlemi
+                    decrypted_text = AESGCMDecryption.aes_gcm_decrypt(encrypted_data, aes_key)
+                    print("\nTebrikler! Şifre başarıyla çözüldü.")
+                    print("AES-GCM Şifresi Çözülmüş Metin:", decrypted_text)
+                except Exception as e:
+                    print(f"Hatalı anahtar veya içerik: {e}")
+                    print("Şifre çözme işlemi başarısız.")
+
+            elif choice == '20':  # RSA-PSS
+                from ModernAlgorithms.ModernEncryptionAlgorithms import RSAPSS
+                from ModernAlgorithms.ModernDecryptionAlgorithms import RSAPSSVerification
+
+                # RSA anahtar çifti oluştur
+                rsa_private_key, rsa_public_key = RSAPSS.generate_rsa_key_pair()
+                print("\nRSA-PSS özel ve genel anahtarları oluşturuldu ve bellekte tutuluyor.")
+
+                # Kullanıcıdan mesajı al
+                message = input("Mesajı girin: ")
+
+                # İmzalama işlemi
+                signature = RSAPSS.rsa_pss_sign(message, rsa_private_key)
+                print("\nRSA-PSS İmzalanmış Veri (İmza):", signature)
+
+                # İmza doğrulama işlemi
+                is_valid = RSAPSSVerification.rsa_pss_verify(message, signature, rsa_public_key)
+                if is_valid:
+                    print("\nTebrikler! İmza başarıyla doğrulandı.")
+                else:
+                    print("\nHata: İmza doğrulama başarısız.")
+                    
+        # Quantum Algorithms
+        elif choice in ['21', '22', '23']:
+            if choice == '21':  # Lattice-Based Cryptography
+                public_key = PUBLIC_KEY
+                encrypted = quantum_encrypt.lattice_encrypt(text, public_key)
+                # log icin public key print et
+                print(f"\nPublic Key: {public_key}")
+                print("\nLattice-Based Şifrelenmiş Metin:", encrypted)
+
+                # Decryption with user key guessing
+                print("\nŞifre çözme işlemi başlıyor. Lütfen doğru anahtarı tahmin edin.")
+                while True:
+                    try:
+                        guessed_key = int(input("Tahmini anahtarı girin (sayı): "))
+                        decrypted = quantum_decrypt.lattice_decrypt(encrypted, guessed_key)
+                        if guessed_key == public_key:
+                            print("\nTebrikler! Doğru anahtarı buldunuz.")
+                            print("Lattice-Based Şifresi Çözülmüş Metin:", decrypted)
+                            break
+                        else:
+                            print("Hatalı anahtar. Lütfen tekrar deneyin.")
+                    except ValueError:
+                        print("Geçersiz giriş! Anahtar bir sayı olmalıdır.")
+                    except Exception as e:
+                        print(f"Hata: {e}")
+
+            elif choice == '22':  # Hash-Based Cryptography
+                hashed_message = quantum_encrypt.hash_encrypt(text)
+                print("\nHash-Based Şifrelenmiş (hash) Metin:", hashed_message)
+                print("\nHash fonksiyonları tek yönlüdür ve geri çözülemez.")
+
+            elif choice == '23':  # Code-Based Cryptography
+                key = 42  # Örnek bir anahtar
+                encrypted = quantum_encrypt.code_based_encrypt(text, key)
+                print("\nCode-Based Şifrelenmiş Metin:", encrypted)
+
+                # Decryption with user key guessing
+                print("\nŞifre çözme işlemi başlıyor. Lütfen doğru anahtarı tahmin edin.")
+                while True:
+                    try:
+                        guessed_key = int(input("Tahmini anahtarı girin (sayı): "))
+                        decrypted = quantum_decrypt.code_based_decrypt(encrypted, guessed_key)
+                        if guessed_key == key:
+                            print("\nTebrikler! Doğru anahtarı buldunuz.")
+                            print("Code-Based Şifresi Çözülmüş Metin:", decrypted)
+                            break
+                        else:
+                            print("Hatalı anahtar. Lütfen tekrar deneyin.")
+                    except ValueError:
+                        print("Geçersiz giriş! Anahtar bir sayı olmalıdır.")
+                    except Exception as e:
+                        print(f"Hata: {e}")
+
+                
+                
+                
+    
 
 if __name__ == "__main__":
     main()

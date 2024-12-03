@@ -1,5 +1,5 @@
-from CompositeEncryptionAlgorithms import CompositeEncryptionAlgorithms
-from CompositeDecryptionAlgorithms import CompositeDecryptionAlgorithms
+from CompositeAlgorithms.CompositeEncryptionAlgorithms import CompositeEncryptionAlgorithms
+from CompositeAlgorithms.CompositeDecryptionAlgorithms import CompositeDecryptionAlgorithms
 from Crypto.PublicKey import RSA
 from cryptography.hazmat.primitives.asymmetric import ec
 from cryptography.hazmat.primitives import serialization
