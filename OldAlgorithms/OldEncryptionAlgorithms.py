@@ -90,8 +90,9 @@ class OldEncryptionAlgorithms:
                     return row_idx, row.index(char)
 
         key_matrix = create_matrix(key)
-        text = text.upper().replace('J', 'I')
-        text = text if len(text) % 2 == 0 else text + 'X'
+        text = text.upper().replace('J', 'I')  # Replace 'J' with 'I' to simplify matrix
+        text = text.replace(" ", "")  # Remove spaces
+        text = text if len(text) % 2 == 0 else text + 'X'  # Ensure even length
 
         pairs = [text[i:i + 2] for i in range(0, len(text), 2)]
         result = []
@@ -99,16 +100,17 @@ class OldEncryptionAlgorithms:
         for a, b in pairs:
             row_a, col_a = find_position(key_matrix, a)
             row_b, col_b = find_position(key_matrix, b)
-            if row_a == row_b:
+            if row_a == row_b:  # Same row
                 result.append(key_matrix[row_a][(col_a + (1 if encrypt else -1)) % 5])
                 result.append(key_matrix[row_b][(col_b + (1 if encrypt else -1)) % 5])
-            elif col_a == col_b:
+            elif col_a == col_b:  # Same column
                 result.append(key_matrix[(row_a + (1 if encrypt else -1)) % 5][col_a])
                 result.append(key_matrix[(row_b + (1 if encrypt else -1)) % 5][col_b])
-            else:
+            else:  # Rectangle
                 result.append(key_matrix[row_a][col_b])
                 result.append(key_matrix[row_b][col_a])
         return ''.join(result)
+
 
     def _enigma(self, text, key, encrypt=True):
         rotor = key.upper()
