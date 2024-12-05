@@ -99,7 +99,7 @@ def main():
         
         print("x. Çıkış")
 
-        choice = input("Bir seçenek girin (1-19): ")
+        choice = input("Bir seçenek girin (1-23): ")
         if choice == 'x':
             print("Çıkış yapılıyor...")
             break
