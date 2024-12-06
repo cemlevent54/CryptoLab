@@ -1,72 +1,63 @@
-import time
+import time 
 import random
 import sys
 import matplotlib.pyplot as plt
 from collections import Counter
 import tracemalloc
+import math
 
-
-class AlgorithmComparator:
-    def __init__(self, algo1, algo2):
-        """
-        Constructor for the AlgorithmComparator class.
-        :param algo1: First algorithm function.
-        :param algo2: Second algorithm function.
-        """
+class SymmetricAlgorithmComparator():
+    def __init__(self, algo1,algo2):
         self.algo1 = algo1
         self.algo2 = algo2
-
+    
     def measure_performance(self, algo, data):
         """
-        Measures the average execution time of the algorithm over multiple iterations.
-        :param algo: Algorithm function.
+        Measures the average execution time of the encryption algorithm.
+
+        :param algo: Encryption algorithm function.
         :param data: Input data for the algorithm.
         :param iterations: Number of times the algorithm is executed.
         :return: Average execution time in seconds.
         """
-        iterations=100
         total_time = 0
+        iterations = 100
         for _ in range(iterations):
+            # Başlangıç zamanını al
             start_time = time.perf_counter()
+            
+            # Şifreleme işlemini gerçekleştir
             algo(data)
+            
+            # Bitiş zamanını al
             end_time = time.perf_counter()
+            
+            # Toplam süreyi hesapla
             total_time += (end_time - start_time)
-    
+        
         # Ortalama süreyi döndür
         return total_time / iterations
-
+    
     def frequency_analysis(self, output):
         """
-        Performs frequency analysis on the output of the algorithm using English letter frequency.
+        Calculates the Shannon Entropy for the given output.
 
-        :param output: Output string of the algorithm.
-        :return: Chi-squared score indicating how close the output is to natural language frequencies.
+        :param output: Output string (or byte output) of the encryption algorithm.
+        :return: Shannon Entropy value.
         """
-        # English letter frequency (normalized)
-        english_freq = {
-            'A': 8.2, 'B': 1.5, 'C': 2.8, 'D': 4.3, 'E': 13.0, 'F': 2.2,
-            'G': 2.0, 'H': 6.1, 'I': 7.0, 'J': 0.15, 'K': 0.77, 'L': 4.0,
-            'M': 2.4, 'N': 6.7, 'O': 7.5, 'P': 1.9, 'Q': 0.095, 'R': 6.0,
-            'S': 6.3, 'T': 9.1, 'U': 2.8, 'V': 0.98, 'W': 2.4, 'X': 0.15,
-            'Y': 2.0, 'Z': 0.074
-        }
+        if not output:
+            return 0  # Eğer veri boşsa, Entropy sıfır döndür
+        
+        freq = Counter(output)
+        total = len(output)
+        entropy = 0
 
-        # Calculate output letter frequencies
-        output_freq = Counter(output.upper())  # Case-insensitive
-        total_chars = sum(output_freq.values())
+        for count in freq.values():
+            probability = count / total
+            entropy -= probability * math.log2(probability)
 
-        if total_chars == 0:
-            return float('inf')  # No characters to analyze
-
-        # Calculate Chi-squared score
-        chi_squared = sum(
-            (((output_freq.get(letter, 0) / total_chars * 100) - expected_freq) ** 2) / expected_freq
-            for letter, expected_freq in english_freq.items()
-        )
-
-        return chi_squared
+        return entropy
     
-
     def memory_usage(self, algo, data):
         """
         Estimates the peak memory usage of the algorithm with warm-up phase using tracemalloc.
@@ -84,10 +75,9 @@ class AlgorithmComparator:
         tracemalloc.stop()
 
         memory_used = peak / 1024  # Zirve bellek kullanımını KB cinsine çevir
-        print(f"Peak Memory used (with warm-up): {memory_used:.3f} KB")
+        # print(f"Peak Memory used (with warm-up): {memory_used:.3f} KB")
         return memory_used
-
-
+    
     def compare_algorithms(self, data, key_space_size):
         """
         Compares the two algorithms on various metrics.
@@ -100,18 +90,35 @@ class AlgorithmComparator:
         # Performance
         results["algo1_performance"] = self.measure_performance(self.algo1, data)
         results["algo2_performance"] = self.measure_performance(self.algo2, data)
-
+        # print efficient result for performance
+        if results["algo1_performance"] < results["algo2_performance"]:
+            print("Algorithm 1 is more efficient.",results["algo1_performance"],results["algo2_performance"])
+        else:
+            print("Algorithm 2 is more efficient.",results["algo1_performance"],results["algo2_performance"])
         # Frequency analysis
+        algo1_encrypted = self.algo1(data)
+        algo2_encrypted = self.algo2(data)
+        # print length of encrypted data
+        print("Length of encrypted data for algo1:",len(algo1_encrypted))
+        print("Length of encrypted data for algo2:",len(algo2_encrypted))
         results["algo1_frequency"] = self.frequency_analysis(self.algo1(data))
         results["algo2_frequency"] = self.frequency_analysis(self.algo2(data))
-
+        # print efficient result for frequency
+        if results["algo1_frequency"] < results["algo2_frequency"]:
+            print("Algorithm 1 is more efficient.",results["algo1_frequency"],results["algo2_frequency"])
+        else:
+            print("Algorithm 2 is more efficient.",results["algo1_frequency"],results["algo2_frequency"])
 
         # Memory usage
         results["algo1_memory"] = self.memory_usage(self.algo1, data)
         results["algo2_memory"] = self.memory_usage(self.algo2, data)
-
+        # print efficient result for memory
+        if results["algo1_memory"] < results["algo2_memory"]:
+            print("Algorithm 1 is more efficient.",results["algo1_memory"],results["algo2_memory"])
+        else:
+            print("Algorithm 2 is more efficient.",results["algo1_memory"],results["algo2_memory"])
         return results
-
+    
     def plot_performance(self, results):
         """
         Plots the performance comparison of the algorithms.
@@ -180,20 +187,3 @@ class AlgorithmComparator:
         self.plot_performance(results)
         self.plot_frequency(results)
         self.plot_memory(results)
-        
-
-
-# Example usage:
-# def sample_algo1(data):
-#     return "".join(random.sample(data, len(data)))
-
-
-# def sample_algo2(data):
-#     return "".join(sorted(data))
-
-
-# comparator = AlgorithmComparator(sample_algo1, sample_algo2)
-# test_data = "exampledatafortestingalgorithms"
-# key_space = 2 ** 16  # Example key space size
-# comparison_results = comparator.compare_algorithms(test_data, key_space)
-# comparator.plot_results(comparison_results)
