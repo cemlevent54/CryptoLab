@@ -17,6 +17,7 @@ class Ui_Hybrid_Algorithms_MainWindow(object):
         Hybrid_Algorithms_MainWindow.resize(1257, 860)
         self.centralwidget = QtWidgets.QWidget(Hybrid_Algorithms_MainWindow)
         self.centralwidget.setObjectName("centralwidget")
+        # label for Performance
         self.lblPerformance = QtWidgets.QLabel(self.centralwidget)
         self.lblPerformance.setGeometry(QtCore.QRect(600, 110, 121, 31))
         font = QtGui.QFont()
@@ -26,6 +27,8 @@ class Ui_Hybrid_Algorithms_MainWindow(object):
         font.setWeight(75)
         self.lblPerformance.setFont(font)
         self.lblPerformance.setObjectName("lblPerformance")
+        
+        # Group Box for Algorithm 2
         self.grpBox_Algorithm2 = QtWidgets.QGroupBox(self.centralwidget)
         self.grpBox_Algorithm2.setGeometry(QtCore.QRect(40, 560, 371, 191))
         font = QtGui.QFont()
@@ -35,6 +38,8 @@ class Ui_Hybrid_Algorithms_MainWindow(object):
         font.setWeight(75)
         self.grpBox_Algorithm2.setFont(font)
         self.grpBox_Algorithm2.setObjectName("grpBox_Algorithm2")
+        
+        # Radio Button for RSA + AES in Algorithm 2
         self.rdRSAAES2 = QtWidgets.QRadioButton(self.grpBox_Algorithm2)
         self.rdRSAAES2.setGeometry(QtCore.QRect(10, 40, 331, 31))
         font = QtGui.QFont()
@@ -44,6 +49,9 @@ class Ui_Hybrid_Algorithms_MainWindow(object):
         font.setWeight(75)
         self.rdRSAAES2.setFont(font)
         self.rdRSAAES2.setObjectName("rdRSAAES2")
+        self.rdRSAAES2.setChecked(False)
+        
+        # Radio Button for ECC + AES in Algorithm 2
         self.rdECCAES2 = QtWidgets.QRadioButton(self.grpBox_Algorithm2)
         self.rdECCAES2.setGeometry(QtCore.QRect(10, 100, 331, 20))
         font = QtGui.QFont()
@@ -53,6 +61,9 @@ class Ui_Hybrid_Algorithms_MainWindow(object):
         font.setWeight(75)
         self.rdECCAES2.setFont(font)
         self.rdECCAES2.setObjectName("rdECCAES2")
+        self.rdECCAES2.setChecked(False)
+        
+        # Label for Memory Usage
         self.lblMemoryUsage = QtWidgets.QLabel(self.centralwidget)
         self.lblMemoryUsage.setGeometry(QtCore.QRect(970, 110, 181, 31))
         font = QtGui.QFont()
@@ -62,6 +73,8 @@ class Ui_Hybrid_Algorithms_MainWindow(object):
         font.setWeight(75)
         self.lblMemoryUsage.setFont(font)
         self.lblMemoryUsage.setObjectName("lblMemoryUsage")
+        
+        # Label for Security
         self.lblSecurity = QtWidgets.QLabel(self.centralwidget)
         self.lblSecurity.setGeometry(QtCore.QRect(790, 500, 181, 31))
         font = QtGui.QFont()
@@ -71,6 +84,8 @@ class Ui_Hybrid_Algorithms_MainWindow(object):
         font.setWeight(75)
         self.lblSecurity.setFont(font)
         self.lblSecurity.setObjectName("lblSecurity")
+        
+        # Label for Performance 2
         self.lblPerformance_2 = QtWidgets.QLabel(self.centralwidget)
         self.lblPerformance_2.setGeometry(QtCore.QRect(450, 20, 481, 61))
         font = QtGui.QFont()
@@ -80,9 +95,13 @@ class Ui_Hybrid_Algorithms_MainWindow(object):
         font.setWeight(75)
         self.lblPerformance_2.setFont(font)
         self.lblPerformance_2.setObjectName("lblPerformance_2")
+        
+        # Graphics View for Security
         self.graphSecurity = QtWidgets.QGraphicsView(self.centralwidget)
         self.graphSecurity.setGeometry(QtCore.QRect(730, 540, 271, 221))
         self.graphSecurity.setObjectName("graphSecurity")
+        
+        # Group Box for Algorithm 1
         self.grpBox_Algorithm1 = QtWidgets.QGroupBox(self.centralwidget)
         self.grpBox_Algorithm1.setGeometry(QtCore.QRect(40, 60, 371, 181))
         font = QtGui.QFont()
@@ -92,12 +111,18 @@ class Ui_Hybrid_Algorithms_MainWindow(object):
         font.setWeight(75)
         self.grpBox_Algorithm1.setFont(font)
         self.grpBox_Algorithm1.setObjectName("grpBox_Algorithm1")
+        
+        # Radio Button for RSA + AES in Algorithm 1
         self.rdRSAAES1 = QtWidgets.QRadioButton(self.grpBox_Algorithm1)
         self.rdRSAAES1.setGeometry(QtCore.QRect(10, 30, 341, 31))
         self.rdRSAAES1.setObjectName("rdRSAAES1")
+        self.rdRSAAES1.setChecked(False)
+        # Radio Button for ECC + AES in Algorithm 1
         self.rdECCAES1 = QtWidgets.QRadioButton(self.grpBox_Algorithm1)
         self.rdECCAES1.setGeometry(QtCore.QRect(10, 90, 311, 20))
         self.rdECCAES1.setObjectName("rdECCAES1")
+        self.rdECCAES1.setChecked(False)
+        # Button for Compare selected Algorithms
         self.btnCompare = QtWidgets.QPushButton(self.centralwidget)
         self.btnCompare.setGeometry(QtCore.QRect(750, 420, 211, 51))
         font = QtGui.QFont()
@@ -107,12 +132,15 @@ class Ui_Hybrid_Algorithms_MainWindow(object):
         font.setWeight(75)
         self.btnCompare.setFont(font)
         self.btnCompare.setObjectName("btnCompare")
+        # Graphics View for Memory Usage
         self.graphMemoryUsage = QtWidgets.QGraphicsView(self.centralwidget)
         self.graphMemoryUsage.setGeometry(QtCore.QRect(920, 150, 271, 221))
         self.graphMemoryUsage.setObjectName("graphMemoryUsage")
+        # Graphics View for Performance
         self.graphPerformance = QtWidgets.QGraphicsView(self.centralwidget)
         self.graphPerformance.setGeometry(QtCore.QRect(520, 150, 271, 221))
         self.graphPerformance.setObjectName("graphPerformance")
+        # Group Box for Algorithm Test
         self.grpBox_AlgorithmTest = QtWidgets.QGroupBox(self.centralwidget)
         self.grpBox_AlgorithmTest.setGeometry(QtCore.QRect(40, 260, 371, 271))
         font = QtGui.QFont()
@@ -122,6 +150,7 @@ class Ui_Hybrid_Algorithms_MainWindow(object):
         font.setWeight(75)
         self.grpBox_AlgorithmTest.setFont(font)
         self.grpBox_AlgorithmTest.setObjectName("grpBox_AlgorithmTest")
+        # Text Box for Encrypt
         self.txtBoxEncrypt = QtWidgets.QTextEdit(self.grpBox_AlgorithmTest)
         self.txtBoxEncrypt.setGeometry(QtCore.QRect(30, 40, 221, 41))
         font = QtGui.QFont()
@@ -131,6 +160,7 @@ class Ui_Hybrid_Algorithms_MainWindow(object):
         font.setWeight(75)
         self.txtBoxEncrypt.setFont(font)
         self.txtBoxEncrypt.setObjectName("txtBoxEncrypt")
+        # Text Box for Decrypt
         self.txtBoxDecrypt = QtWidgets.QTextEdit(self.grpBox_AlgorithmTest)
         self.txtBoxDecrypt.setGeometry(QtCore.QRect(30, 200, 221, 41))
         font = QtGui.QFont()
@@ -140,6 +170,7 @@ class Ui_Hybrid_Algorithms_MainWindow(object):
         font.setWeight(75)
         self.txtBoxDecrypt.setFont(font)
         self.txtBoxDecrypt.setObjectName("txtBoxDecrypt")
+        # Text Box for Key 1
         self.txtBoxKey1 = QtWidgets.QTextEdit(self.grpBox_AlgorithmTest)
         self.txtBoxKey1.setGeometry(QtCore.QRect(270, 40, 91, 41))
         font = QtGui.QFont()
@@ -149,6 +180,7 @@ class Ui_Hybrid_Algorithms_MainWindow(object):
         font.setWeight(75)
         self.txtBoxKey1.setFont(font)
         self.txtBoxKey1.setObjectName("txtBoxKey1")
+        # Text Box for Key 2
         self.txtBoxKey2 = QtWidgets.QTextEdit(self.grpBox_AlgorithmTest)
         self.txtBoxKey2.setGeometry(QtCore.QRect(270, 200, 91, 41))
         font = QtGui.QFont()
@@ -158,6 +190,7 @@ class Ui_Hybrid_Algorithms_MainWindow(object):
         font.setWeight(75)
         self.txtBoxKey2.setFont(font)
         self.txtBoxKey2.setObjectName("txtBoxKey2")
+        # Button for Decrypt
         self.btnDecrypt = QtWidgets.QPushButton(self.grpBox_AlgorithmTest)
         self.btnDecrypt.setGeometry(QtCore.QRect(220, 130, 93, 28))
         font = QtGui.QFont()
@@ -167,6 +200,7 @@ class Ui_Hybrid_Algorithms_MainWindow(object):
         font.setWeight(75)
         self.btnDecrypt.setFont(font)
         self.btnDecrypt.setObjectName("btnDecrypt")
+        # Button for Encrypt
         self.btnEncrypt = QtWidgets.QPushButton(self.grpBox_AlgorithmTest)
         self.btnEncrypt.setGeometry(QtCore.QRect(90, 130, 93, 28))
         font = QtGui.QFont()
@@ -176,6 +210,7 @@ class Ui_Hybrid_Algorithms_MainWindow(object):
         font.setWeight(75)
         self.btnEncrypt.setFont(font)
         self.btnEncrypt.setObjectName("btnEncrypt")
+        
         Hybrid_Algorithms_MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(Hybrid_Algorithms_MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1257, 26))
@@ -205,13 +240,31 @@ class Ui_Hybrid_Algorithms_MainWindow(object):
         self.grpBox_AlgorithmTest.setTitle(_translate("Hybrid_Algorithms_MainWindow", "Select Algorithm from left side to test"))
         self.btnDecrypt.setText(_translate("Hybrid_Algorithms_MainWindow", "Decrypt"))
         self.btnEncrypt.setText(_translate("Hybrid_Algorithms_MainWindow", "Encrypt"))
+    
+    def reset_form(self):
+        self.rdRSAAES1.setChecked(False)
+        self.rdECCAES1.setChecked(False)
+        
+        self.rdRSAAES2.setChecked(False)
+        self.rdECCAES2.setChecked(False)
+        
+        self.txtBoxEncrypt.setText("")
+        self.txtBoxDecrypt.setText("")
+        
+        self.txtBoxKey1.setText("")
+        self.txtBoxKey2.setText("")
+        
+        self.graphPerformance.clear()
+        self.graphMemoryUsage.clear()
+        self.graphSecurity.clear()
+        
 
 
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    Hybrid_Algorithms_MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_Hybrid_Algorithms_MainWindow()
-    ui.setupUi(Hybrid_Algorithms_MainWindow)
-    Hybrid_Algorithms_MainWindow.show()
-    sys.exit(app.exec_())
+# if __name__ == "__main__":
+#     import sys
+#     app = QtWidgets.QApplication(sys.argv)
+#     Hybrid_Algorithms_MainWindow = QtWidgets.QMainWindow()
+#     ui = Ui_Hybrid_Algorithms_MainWindow()
+#     ui.setupUi(Hybrid_Algorithms_MainWindow)
+#     Hybrid_Algorithms_MainWindow.show()
+#     sys.exit(app.exec_())

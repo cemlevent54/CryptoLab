@@ -6,7 +6,7 @@ import base64
 import os
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.backends import default_backend
-
+from Crypto.PublicKey import RSA
 
 class CompositeEncryptionAlgorithms:
     def __init__(self):
@@ -156,3 +156,66 @@ class CompositeEncryptionAlgorithms:
                 return public_key
         except Exception as e:
             raise ValueError(f"Geçersiz genel anahtar formatı: {e}")
+    
+    def ecc_aes_encryption(self,text, composite_encrypt):
+        """
+        Metni ECC + AES algoritması ile şifreler ve anahtarları dosyalara kaydeder.
+
+        Args:
+            text (str): Şifrelenecek metin.
+            composite_encrypt: ECC + AES şifreleme sınıfının örneği.
+
+        Returns:
+            dict: Şifrelenmiş veri.
+        """
+        # ECC anahtar çiftini oluştur
+        composite_encrypt.generate_ecc_keys()
+
+        # Anahtarları dosyalara kaydet
+        private_key_file = "ecc_aes_private_key.pem"
+        public_key_file = "ecc_aes_public_key.pem"
+
+        composite_encrypt.save_private_key_to_file(private_key_file)
+        composite_encrypt.save_public_key_to_file(public_key_file)
+
+        print(f"Private Key: {composite_encrypt.private_key}")
+        print(f"Public Key: {composite_encrypt.public_key}")
+
+        # Public key ile veriyi şifrele
+        public_key = composite_encrypt.public_key
+        encrypted_data = composite_encrypt.ecc_aes_encrypt(text, public_key)
+
+        print("\nECC + AES Şifrelenmiş veri: ", encrypted_data)
+        return encrypted_data
+    
+    def rsa_aes_encryption(self,text,composite_encrypt):
+        """
+        Metni RSA + AES algoritması ile şifreler ve anahtarları dosyalara kaydeder.
+        
+        Args:
+            text (str): Şifrelenecek metin.
+            composite_encrypt: RSA + AES şifreleme sınıfının örneği.
+        
+        Returns:
+            dict: Şifrelenmiş veri.
+        """
+        # RSA anahtar çifti oluştur
+        key_pair = RSA.generate(2048)
+        private_key = key_pair.export_key()
+        public_key = key_pair.publickey().export_key()
+
+        # Anahtarları dosyalara kaydet
+        private_key_file = "rsa_aes_private_key.pem"
+        public_key_file = "rsa_aes_public_key.pem"
+
+        with open(private_key_file, "wb") as priv_file:
+            priv_file.write(private_key)
+
+        with open(public_key_file, "wb") as pub_file:
+            pub_file.write(public_key)
+
+        # Şifreleme işlemi
+        encrypted_data = composite_encrypt.rsa_aes_encrypt(text, public_key.decode())
+
+        print(f"Encrypted Data: {encrypted_data}")
+        return encrypted_data
