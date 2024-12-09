@@ -27,14 +27,24 @@ class RSAPSSVerification:
     RSA-PSS (Probabilistic Signature Scheme)
     """
     @staticmethod
-    def rsa_pss_verify(message: str, signature: str, public_key: bytes):
+    def rsa_pss_verify(message: str, signature: str, public_key: bytes) -> bool:
         """
         RSA-PSS ile imza doğrulama yapar.
+        :param message: İmzalanmış mesaj
+        :param signature: Base64 ile kodlanmış imza
+        :param public_key: Public key (PEM formatında byte)
+        :return: Doğrulama başarılıysa True, aksi halde False
         """
-        public_key_obj = RSA.import_key(public_key)
-        h = SHA256.new(message.encode())
         try:
-            pss.new(public_key_obj).verify(h, base64.b64decode(signature))
+            # Public key'i yükle
+            public_key_obj = RSA.import_key(public_key)
+            # Mesajı SHA256 ile hashle
+            h = SHA256.new(message.encode())
+            # Base64 ile çözülmüş imzayı doğrula
+            verifier = pss.new(public_key_obj)
+            verifier.verify(h, base64.b64decode(signature))
+            print("İmza doğrulandı: Geçerli")
             return True
-        except (ValueError, TypeError):
+        except (ValueError, TypeError) as e:
+            print(f"İmza doğrulama başarısız: {e}")
             return False
