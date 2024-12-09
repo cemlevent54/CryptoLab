@@ -7,6 +7,7 @@ from Crypto.Cipher import DES3
 
 import matplotlib.pyplot as plt
 # Forms 
+from Forms.QuantumEncryptionAlgorithms import Ui_Quantum_Encryption_MainWindow
 from Forms.MainForm import Ui_MainWindow
 from Forms.OldAlgorithms import Ui_Old_Encryption_MainWindow
 from Forms.SymmetricEncryptionAlgorithms import Ui_SymmetricEncryption_MainWindow
@@ -23,10 +24,13 @@ from CompositeAlgorithms.CompositeEncryptionAlgorithms import CompositeEncryptio
 from CompositeAlgorithms.CompositeDecryptionAlgorithms import CompositeDecryptionAlgorithms
 from ModernAlgorithms.ModernEncryptionAlgorithms import AESGCMEncryption, RSAPSS
 from ModernAlgorithms.ModernDecryptionAlgorithms import AESGCMDecryption, RSAPSSVerification
+from QuantumAlgorithms.QuantumEncryptionAlgorithms import QuantumEncryptionAlgorithms
+from QuantumAlgorithms.QuantumDecryptionAlgorithms import QuantumDecryptionAlgorithms
 # define qcore
 import PyQt5.QtCore as QtCore
 from base64 import encode, decode
 #comparison
+from CompareAlgorithms.CompareQuantumAlgorithms import QuantumAlgorithmComparator
 from CompareAlgorithms.CompareModernAlgorithms import ModernAlgorithmComparator
 from CompareAlgorithms.CompareSymmetricAlgorithms import SymmetricAlgorithmComparator
 from CompareAlgorithms.CompareAsymmetricAlgorithms import AsymmetricAlgorithmComparator
@@ -57,7 +61,7 @@ class MainApp(QMainWindow):
         self.ui.btnAsymmetricEncryption.clicked.connect(self.openAsymmetricEncryption)
         self.ui.btnHybridAlgorithms.clicked.connect(self.openCompositeEncryption)
         self.ui.btnModernAlgorithms.clicked.connect(self.openModernEncryption)
-        
+        self.ui.btnQuantumAlgorithms.clicked.connect(self.openQuantumEncryption)
         
     def openOldEncryption(self):
         # Eski şifreleme penceresini başlat ve göster
@@ -87,6 +91,12 @@ class MainApp(QMainWindow):
         # Modern şifreleme penceresini başlat ve göster
         self.modernEncryption = ModernEncryption(self)
         self.modernEncryption.show()
+        self.hide()
+        
+    def openQuantumEncryption(self):
+        # Kuantum şifreleme penceresini başlat ve göster
+        self.quantumEncryption = QuantumEncryption(self)
+        self.quantumEncryption.show()
         self.hide()
 
 
@@ -1320,8 +1330,7 @@ class ModernEncryption(QtWidgets.QMainWindow):
         self.ui.btnEncrypt.clicked.connect(self.btn_encrypt)
         self.ui.btnDecrypt.clicked.connect(self.btn_decrypt)
         self.ui.btnCompare.clicked.connect(self.compare_algorithms)
-        
-        
+             
     def closeEvent(self,event):
         if self.parent:
             self.parent.show()
@@ -1408,10 +1417,7 @@ class ModernEncryption(QtWidgets.QMainWindow):
         self.plot_to_graphicsview(self.ui.graphPerformance, "Performance Comparison", [data1[0]], [data2[0]], ["Performance"])
         self.plot_to_graphicsview(self.ui.graphSecurity, "Size of outputs", [data1[1]], [data2[1]], ["Size"])
         self.plot_to_graphicsview(self.ui.graphMemoryUsage, "Memory Usage", [data1[2]], [data2[2]], ["Memory"])
-        
-        
-                                                                                                     
-        
+                                                                                                             
     def btn_encrypt(self):
         """Şifreleme işlemini gerçekleştirir"""
         
@@ -1560,8 +1566,238 @@ class ModernEncryption(QtWidgets.QMainWindow):
         
         graphics_view.fitInView(scene.itemsBoundingRect(), QtCore.Qt.KeepAspectRatio)
     
-    
+class QuantumEncryption(QtWidgets.QMainWindow):
+    keys = {}
+    def __init__(self,parent=None):
+        super(QuantumEncryption,self).__init__()
+        self.ui = Ui_Quantum_Encryption_MainWindow()
+        self.ui.setupUi(self)
+        self.parent = parent
         
+        # Algoritma karşılaştırma butonuna olay bağlama
+        self.ui.btnEncrypt.clicked.connect(self.btn_encrypt)
+        self.ui.btnDecrypt.clicked.connect(self.btn_decrypt)
+        self.ui.btnCompare.clicked.connect(self.compare_algorithms)
+    
+    def closeEvent(self, event):
+        if self.parent:
+            self.parent.show()
+        event.accept()
+        
+    def get_selected_algorithm(self,groupbox):
+        """Seçili algoritmaları bulur"""
+        for radio_button in groupbox.findChildren(QtWidgets.QRadioButton):
+            if radio_button.isChecked():
+                return [radio_button.text()]
+        return None
+     
+    def get_selected_algorithm_not_list(self,groupbox):
+        """Seçili algoritmaları bulur"""
+        for radio_button in groupbox.findChildren(QtWidgets.QRadioButton):
+            if radio_button.isChecked():
+                return radio_button.text()
+        return None
+
+    def btn_encrypt(self):
+        text = self.ui.txtBoxEncrypt.toPlainText()
+        
+        selected_algorithm = self.get_selected_algorithm(self.ui.grpBox_Algorithm1)
+        
+        if not selected_algorithm:
+            QMessageBox.warning(self, "Selection Error", "Please select an algorithm!")
+            return
+        
+        map_selected_algorithm = {
+            "Lattice Based Cryptography": "Lattice Based Cryptography",
+            "Code Based Cryptography": "Code Based Cryptography",
+            "Hash Based Cryptography": "Hash Based Cryptography",
+        }
+        
+        mapped_algorithm = map_selected_algorithm.get(selected_algorithm[0])
+        if not mapped_algorithm:
+            QMessageBox.warning(self, "Mapping Error", "Selected algorithm is not supported!")
+            return
+        
+        print(f"Selected Algorithm: {selected_algorithm}")
+        print(f"Mapped Algorithm: {mapped_algorithm}")
+        
+        quantum_encrypt = QuantumEncryptionAlgorithms()
+        
+        if mapped_algorithm == "Lattice Based Cryptography":
+            public_key = quantum_encrypt.PUBLIC_KEY
+            self.keys["Lattice Based Cryptography"] = public_key
+            print(f"Public Key: {public_key}")
+            encrypted_text = quantum_encrypt.lattice_encrypt(text, public_key)
+            print(f"Encrypted Text: {encrypted_text}")
+            
+            self.ui.txtBoxDecrypt.setText(encrypted_text)
+            self.ui.txtBoxEncrypt.setText("")
+            self.ui.txtBoxKey1.setText("")
+            
+            
+        elif mapped_algorithm == "Code Based Cryptography":
+            key = 42
+            self.keys["Code Based Cryptography"] = key
+            encrypted_text = quantum_encrypt.code_based_encrypt(text, key)
+            print(f"Encrypted Text: {encrypted_text}")
+            
+            self.ui.txtBoxDecrypt.setText(encrypted_text)
+            self.ui.txtBoxEncrypt.setText("")
+            self.ui.txtBoxKey1.setText("")
+            
+            
+        elif mapped_algorithm == "Hash Based Cryptography":
+            hashed_message = quantum_encrypt.hash_encrypt(text)
+            print(f"Hashed Message: {hashed_message}")
+            self.ui.txtBoxDecrypt.setText(hashed_message)
+            self.ui.txtBoxEncrypt.setText("")
+            self.ui.txtBoxKey1.setText("")
+    
+    def btn_decrypt(self):
+        text = self.ui.txtBoxDecrypt.toPlainText()
+        
+        if not text:
+            QMessageBox.warning(self, "Input Error", "No encrypted text to decrypt!")
+            return
+        
+        selected_algorithm = self.get_selected_algorithm(self.ui.grpBox_Algorithm1)
+        if not selected_algorithm:
+            QMessageBox.warning(self, "Selection Error", "Please select an algorithm!")
+            return
+        print(f"Selected Algorithm for Decryption: {selected_algorithm}")
+        
+        map_selected_algorithm = {
+            "Lattice Based Cryptography": "Lattice Based Cryptography",
+            "Code Based Cryptography": "Code Based Cryptography",
+            "Hash Based Cryptography": "Hash Based Cryptography",
+        }
+        
+        mapped_algorithm = map_selected_algorithm.get(selected_algorithm[0])
+        if not mapped_algorithm:
+            QMessageBox.warning(self, "Mapping Error", "Selected algorithm is not supported!")
+            return
+        
+        quantum_decrypt = QuantumDecryptionAlgorithms()
+        
+        if mapped_algorithm == "Lattice Based Cryptography":
+           public_key = self.keys.get("Lattice Based Cryptography")
+           if not public_key:
+               QMessageBox.warning(self, "Key Error", "No public key found for Lattice Based Cryptography!")
+               return
+           
+           decrypted_text = quantum_decrypt.lattice_decrypt(text, public_key)
+           print(f"Decrypted Text: {decrypted_text}")
+           
+           self.ui.txtBoxEncrypt.setText(decrypted_text)
+           self.ui.txtBoxDecrypt.setText("")
+           self.ui.txtBoxKey2.setText("")
+        elif mapped_algorithm == "Code Based Cryptography":
+            key = self.keys.get("Code Based Cryptography")
+            if not key:
+                QMessageBox.warning(self, "Key Error", "No key found for Code Based Cryptography!")
+                return
+            decrypted_text = quantum_decrypt.code_based_decrypt(text, key)
+            print(f"Decrypted Text: {decrypted_text}")
+            self.ui.txtBoxEncrypt.setText(decrypted_text)
+            self.ui.txtBoxEncrypt.setText("")
+            self.ui.txtBoxKey2.setText("")
+            
+        elif mapped_algorithm == "Hash Based Cryptography":
+            hashed_message = "Hashing is irreversible!"
+            self.ui.txtBoxEncrypt.setText(hashed_message)
+            self.ui.txtBoxDecrypt.setText("")
+            self.ui.txtBoxKey2.setText("")
+    
+    def compare_algorithms(self):
+        map_selected_algorithm = {
+            "Lattice Based Cryptography": "Lattice Based Cryptography",
+            "Code Based Cryptography": "Code Based Cryptography",
+            "Hash Based Cryptography": "Hash Based Cryptography",
+        }
+        
+        selected_algorithm_1 = self.get_selected_algorithm_not_list(self.ui.grpBox_Algorithm1)
+        selected_algorithm_2 = self.get_selected_algorithm_not_list(self.ui.grpBox_Algorithm2)
+        print(f"Selected Algorithms: {selected_algorithm_1} vs {selected_algorithm_2}")
+        
+        mapped_algorithm_1 = map_selected_algorithm.get(selected_algorithm_1) 
+        mapped_algorithm_2 = map_selected_algorithm.get(selected_algorithm_2)
+        print(f"Mapped Algorithms: {mapped_algorithm_1} vs {mapped_algorithm_2}")
+        
+        if not mapped_algorithm_1 or not mapped_algorithm_2:
+            QMessageBox.warning(self, "Selection Error", "Please select both algorithms to compare.")
+            return
+        
+        quantum_encrypt = QuantumEncryptionAlgorithms()
+        
+        algorithm_map = {
+            "Lattice Based Cryptography": lambda text: quantum_encrypt.lattice_encrypt(text, quantum_encrypt.PUBLIC_KEY),
+            "Code Based Cryptography": lambda text: quantum_encrypt.code_based_encrypt(text, 42),
+            "Hash Based Cryptography": lambda text: quantum_encrypt.hash_encrypt(text),
+        }
+        
+        algo1 = algorithm_map.get(mapped_algorithm_1)
+        algo2 = algorithm_map.get(mapped_algorithm_2)
+        
+        if not algo1 or not algo2:
+            QMessageBox.warning(self, "Algorithm Error", "One of the selected algorithms is not supported.")
+            return
+        
+        # comparator
+        comparator = QuantumAlgorithmComparator(algo1, algo2)
+        test_data = "exampledatafortestingalgorithms"
+        key_space = 2 ** 16
+        comparison_results = comparator.compare_algorithms(test_data, key_space)
+        
+        categories = ["Performance", "Security", "Memory Usage"]
+        data1 = [
+            comparison_results["algo1_performance"],
+            comparison_results["algo1_frequency"],
+            comparison_results["algo1_memory"],
+        ]
+        data2 = [
+            comparison_results["algo2_performance"],
+            comparison_results["algo2_frequency"],
+            comparison_results["algo2_memory"],
+        ]
+        
+        self.plot_to_graphicsview(self.ui.graphPerformance, "Performance Comparison", [data1[0]], [data2[0]], ["Performance"])
+        self.plot_to_graphicsview(self.ui.graphSecurity, "Security with Frequency Analysis", [data1[1]], [data2[1]], ["Security"])
+        self.plot_to_graphicsview(self.ui.graphMemoryUsage, "Memory Usage", [data1[2]], [data2[2]], ["Memory"])
+        
+    
+    def plot_to_graphicsview(self,graphics_view,title,data1,data2,categories):
+        """
+        Matplotlib grafiğini QGraphicsView içinde göstermek için.
+        :param graphics_view: QGraphicsView bileşeni.
+        :param title: Grafik başlığı.
+        :param data1: Birinci algoritmanın verileri.
+        :param data2: İkinci algoritmanın verileri.
+        :param categories: Kategoriler (örneğin: Performans, Güvenlik).
+        """
+        
+        plt.figure(figsize=(3.5, 2.5))  # QGraphicsView boyutuna uygun bir boyut seç
+        x = range(len(categories))
+        plt.bar(x, data1, width=0.2, label="Algorithm 1", align="center")
+        plt.bar([p + 0.4 for p in x], data2, width=0.2, label="Algorithm 2", align="center")
+        plt.xticks([p + 0.2 for p in x], categories)
+        plt.xlabel("Metrics")
+        plt.ylabel("Scores")
+        plt.title(title)
+        plt.legend()
+        plt.tight_layout()
+        
+        temp_file = "temp_graph.png"
+        plt.savefig(temp_file, dpi=100)
+        plt.close()
+        
+        scene = QGraphicsScene()
+        pixmap = QPixmap(temp_file)
+        scene.addPixmap(pixmap)
+        graphics_view.setScene(scene)
+        
+        graphics_view.fitInView(scene.itemsBoundingRect(), QtCore.Qt.KeepAspectRatio)
+    
+    
 if __name__ == "__main__":
     # PyQt5 uygulamasını başlat
     app = QApplication(sys.argv)

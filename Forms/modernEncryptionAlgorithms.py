@@ -39,6 +39,7 @@ class Ui_Modern_Encryption_MainWindow(object):
         font.setWeight(75)
         self.rdAESGCM2.setFont(font)
         self.rdAESGCM2.setObjectName("rdAESGCM2")
+        self.rdAESGCM2.setChecked(False)
         
         # rsa pss radio button for algorithm 2
         self.rdRSAPSS2 = QtWidgets.QRadioButton(self.grpBox_Algorithm2)
@@ -50,6 +51,7 @@ class Ui_Modern_Encryption_MainWindow(object):
         font.setWeight(75)
         self.rdRSAPSS2.setFont(font)
         self.rdRSAPSS2.setObjectName("rdRSAPSS2")
+        self.rdRSAPSS2.setChecked(False)
         
         # memory usage graph
         self.graphMemoryUsage = QtWidgets.QGraphicsView(self.centralwidget)
@@ -209,11 +211,13 @@ class Ui_Modern_Encryption_MainWindow(object):
         self.rdAESGCM1 = QtWidgets.QRadioButton(self.grpBox_Algorithm1)
         self.rdAESGCM1.setGeometry(QtCore.QRect(10, 30, 581, 31))
         self.rdAESGCM1.setObjectName("rdAESGCM1")
+        self.rdAESGCM1.setChecked(False)
         
         # rsa pss radio button for algorithm 1
         self.rdRSAPSS1 = QtWidgets.QRadioButton(self.grpBox_Algorithm1)
         self.rdRSAPSS1.setGeometry(QtCore.QRect(10, 90, 421, 20))
         self.rdRSAPSS1.setObjectName("rdRSAPSS1")
+        self.rdRSAPSS1.setChecked(False)
         
         
         Modern_Encryption_MainWindow.setCentralWidget(self.centralwidget)

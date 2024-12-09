@@ -3,7 +3,8 @@ import random
 
 class QuantumEncryptionAlgorithms:
     """Class containing encryption algorithms for Lattice, Hash, and Code-Based Cryptography."""
-
+    PUBLIC_KEY = random.randint(1, 255)
+    SECRET_KEY = random.randint(1, 255)
     @staticmethod
     def lattice_encrypt(message, public_key):
         """Encrypts a message using a lattice-based cryptography technique."""
@@ -20,6 +21,17 @@ class QuantumEncryptionAlgorithms:
         """Encrypts a message using a simple code-based cryptography technique."""
         encoded = ''.join(chr(ord(char) ^ key) for char in message)
         return encoded
+    
+    @staticmethod
+    def get_public_key(self):
+        """Returns the public key."""
+        
+        return self.PUBLIC_KEY
+    
+    @staticmethod
+    def get_secret_key(self):
+        """Returns the secret key."""
+        return self.SECRET_KEY
 
 # Example Keys
 PUBLIC_KEY = random.randint(1, 255)  # Example public key

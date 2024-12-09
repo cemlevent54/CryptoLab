@@ -17,6 +17,8 @@ class Ui_Quantum_Encryption_MainWindow(object):
         Quantum_Encryption_MainWindow.resize(1248, 859)
         self.centralwidget = QtWidgets.QWidget(Quantum_Encryption_MainWindow)
         self.centralwidget.setObjectName("centralwidget")
+        
+        # Group Box for Algorithm 1
         self.grpBox_Algorithm1 = QtWidgets.QGroupBox(self.centralwidget)
         self.grpBox_Algorithm1.setGeometry(QtCore.QRect(40, 80, 371, 181))
         font = QtGui.QFont()
@@ -26,15 +28,26 @@ class Ui_Quantum_Encryption_MainWindow(object):
         font.setWeight(75)
         self.grpBox_Algorithm1.setFont(font)
         self.grpBox_Algorithm1.setObjectName("grpBox_Algorithm1")
+        
+        # radio button 1 for Lattice Based Cryptography
         self.rdLattice1 = QtWidgets.QRadioButton(self.grpBox_Algorithm1)
         self.rdLattice1.setGeometry(QtCore.QRect(10, 30, 581, 31))
         self.rdLattice1.setObjectName("rdLattice1")
+        self.rdLattice1.setChecked(False)
+        
+        # radio button 1 for Hash Based Cryptography
         self.rdHash1 = QtWidgets.QRadioButton(self.grpBox_Algorithm1)
         self.rdHash1.setGeometry(QtCore.QRect(10, 80, 421, 20))
         self.rdHash1.setObjectName("rdHash1")
+        self.rdHash1.setChecked(False)
+        
+        # radio button 1 for Code Based Cryptography
         self.rdCode1 = QtWidgets.QRadioButton(self.grpBox_Algorithm1)
         self.rdCode1.setGeometry(QtCore.QRect(10, 130, 421, 20))
         self.rdCode1.setObjectName("rdCode1")
+        self.rdCode1.setChecked(False)
+        
+        # Label for Memory Usage
         self.lblMemoryUsage = QtWidgets.QLabel(self.centralwidget)
         self.lblMemoryUsage.setGeometry(QtCore.QRect(960, 130, 181, 31))
         font = QtGui.QFont()
@@ -44,6 +57,8 @@ class Ui_Quantum_Encryption_MainWindow(object):
         font.setWeight(75)
         self.lblMemoryUsage.setFont(font)
         self.lblMemoryUsage.setObjectName("lblMemoryUsage")
+        
+        # Group Box for Algorithm 2
         self.grpBox_Algorithm2 = QtWidgets.QGroupBox(self.centralwidget)
         self.grpBox_Algorithm2.setGeometry(QtCore.QRect(40, 580, 371, 191))
         font = QtGui.QFont()
@@ -53,6 +68,8 @@ class Ui_Quantum_Encryption_MainWindow(object):
         font.setWeight(75)
         self.grpBox_Algorithm2.setFont(font)
         self.grpBox_Algorithm2.setObjectName("grpBox_Algorithm2")
+        
+        # radio button 2 for Lattice Based Cryptography
         self.rdLattice2 = QtWidgets.QRadioButton(self.grpBox_Algorithm2)
         self.rdLattice2.setGeometry(QtCore.QRect(10, 40, 611, 31))
         font = QtGui.QFont()
@@ -62,6 +79,9 @@ class Ui_Quantum_Encryption_MainWindow(object):
         font.setWeight(75)
         self.rdLattice2.setFont(font)
         self.rdLattice2.setObjectName("rdLattice2")
+        self.rdLattice2.setChecked(False)
+        
+        # radio button 2 for Hash Based Cryptography
         self.rdHash2 = QtWidgets.QRadioButton(self.grpBox_Algorithm2)
         self.rdHash2.setGeometry(QtCore.QRect(10, 90, 451, 20))
         font = QtGui.QFont()
@@ -71,12 +91,20 @@ class Ui_Quantum_Encryption_MainWindow(object):
         font.setWeight(75)
         self.rdHash2.setFont(font)
         self.rdHash2.setObjectName("rdHash2")
+        self.rdHash2.setChecked(False)
+        
+        # radio button 2 for Code Based Cryptography
         self.rdCode2 = QtWidgets.QRadioButton(self.grpBox_Algorithm2)
         self.rdCode2.setGeometry(QtCore.QRect(10, 130, 421, 20))
         self.rdCode2.setObjectName("rdCode2")
+        self.rdCode2.setChecked(False)
+        
+        # Graph for Memory Usage
         self.graphMemoryUsage = QtWidgets.QGraphicsView(self.centralwidget)
         self.graphMemoryUsage.setGeometry(QtCore.QRect(910, 170, 271, 221))
         self.graphMemoryUsage.setObjectName("graphMemoryUsage")
+        
+        # Label for Performance
         self.lblPerformance = QtWidgets.QLabel(self.centralwidget)
         self.lblPerformance.setGeometry(QtCore.QRect(620, 130, 121, 31))
         font = QtGui.QFont()
@@ -86,9 +114,13 @@ class Ui_Quantum_Encryption_MainWindow(object):
         font.setWeight(75)
         self.lblPerformance.setFont(font)
         self.lblPerformance.setObjectName("lblPerformance")
+        
+        # Graph for Security
         self.graphSecurity = QtWidgets.QGraphicsView(self.centralwidget)
         self.graphSecurity.setGeometry(QtCore.QRect(910, 470, 271, 221))
         self.graphSecurity.setObjectName("graphSecurity")
+        
+        # Label for Security
         self.lblSecurity = QtWidgets.QLabel(self.centralwidget)
         self.lblSecurity.setGeometry(QtCore.QRect(970, 430, 181, 31))
         font = QtGui.QFont()
@@ -98,9 +130,13 @@ class Ui_Quantum_Encryption_MainWindow(object):
         font.setWeight(75)
         self.lblSecurity.setFont(font)
         self.lblSecurity.setObjectName("lblSecurity")
+        
+        # Graph for Performance
         self.graphPerformance = QtWidgets.QGraphicsView(self.centralwidget)
         self.graphPerformance.setGeometry(QtCore.QRect(540, 170, 271, 221))
         self.graphPerformance.setObjectName("graphPerformance")
+        
+        # Button to Compare Algorithms
         self.btnCompare = QtWidgets.QPushButton(self.centralwidget)
         self.btnCompare.setGeometry(QtCore.QRect(550, 540, 211, 51))
         font = QtGui.QFont()
@@ -110,6 +146,8 @@ class Ui_Quantum_Encryption_MainWindow(object):
         font.setWeight(75)
         self.btnCompare.setFont(font)
         self.btnCompare.setObjectName("btnCompare")
+        
+        # Label for Header
         self.lblHeader = QtWidgets.QLabel(self.centralwidget)
         self.lblHeader.setGeometry(QtCore.QRect(430, 10, 481, 61))
         font = QtGui.QFont()
@@ -119,6 +157,8 @@ class Ui_Quantum_Encryption_MainWindow(object):
         font.setWeight(75)
         self.lblHeader.setFont(font)
         self.lblHeader.setObjectName("lblHeader")
+        
+        # Group Box for Algorithm Test
         self.grpBox_AlgorithmTest = QtWidgets.QGroupBox(self.centralwidget)
         self.grpBox_AlgorithmTest.setGeometry(QtCore.QRect(40, 280, 371, 271))
         font = QtGui.QFont()
@@ -128,6 +168,8 @@ class Ui_Quantum_Encryption_MainWindow(object):
         font.setWeight(75)
         self.grpBox_AlgorithmTest.setFont(font)
         self.grpBox_AlgorithmTest.setObjectName("grpBox_AlgorithmTest")
+        
+        # Text Box for Encryption
         self.txtBoxEncrypt = QtWidgets.QTextEdit(self.grpBox_AlgorithmTest)
         self.txtBoxEncrypt.setGeometry(QtCore.QRect(30, 40, 221, 41))
         font = QtGui.QFont()
@@ -137,6 +179,8 @@ class Ui_Quantum_Encryption_MainWindow(object):
         font.setWeight(75)
         self.txtBoxEncrypt.setFont(font)
         self.txtBoxEncrypt.setObjectName("txtBoxEncrypt")
+        
+        # Text Box for Decryption
         self.txtBoxDecrypt = QtWidgets.QTextEdit(self.grpBox_AlgorithmTest)
         self.txtBoxDecrypt.setGeometry(QtCore.QRect(30, 200, 221, 41))
         font = QtGui.QFont()
@@ -146,6 +190,8 @@ class Ui_Quantum_Encryption_MainWindow(object):
         font.setWeight(75)
         self.txtBoxDecrypt.setFont(font)
         self.txtBoxDecrypt.setObjectName("txtBoxDecrypt")
+        
+        # Text Box for Key 1
         self.txtBoxKey1 = QtWidgets.QTextEdit(self.grpBox_AlgorithmTest)
         self.txtBoxKey1.setGeometry(QtCore.QRect(270, 40, 91, 41))
         font = QtGui.QFont()
@@ -155,6 +201,8 @@ class Ui_Quantum_Encryption_MainWindow(object):
         font.setWeight(75)
         self.txtBoxKey1.setFont(font)
         self.txtBoxKey1.setObjectName("txtBoxKey1")
+        
+        # Text Box for Key 2
         self.txtBoxKey2 = QtWidgets.QTextEdit(self.grpBox_AlgorithmTest)
         self.txtBoxKey2.setGeometry(QtCore.QRect(270, 200, 91, 41))
         font = QtGui.QFont()
@@ -164,6 +212,8 @@ class Ui_Quantum_Encryption_MainWindow(object):
         font.setWeight(75)
         self.txtBoxKey2.setFont(font)
         self.txtBoxKey2.setObjectName("txtBoxKey2")
+        
+        # button for Decrypt    
         self.btnDecrypt = QtWidgets.QPushButton(self.grpBox_AlgorithmTest)
         self.btnDecrypt.setGeometry(QtCore.QRect(220, 130, 93, 28))
         font = QtGui.QFont()
@@ -173,6 +223,8 @@ class Ui_Quantum_Encryption_MainWindow(object):
         font.setWeight(75)
         self.btnDecrypt.setFont(font)
         self.btnDecrypt.setObjectName("btnDecrypt")
+        
+        # button for Encrypt
         self.btnEncrypt = QtWidgets.QPushButton(self.grpBox_AlgorithmTest)
         self.btnEncrypt.setGeometry(QtCore.QRect(90, 130, 93, 28))
         font = QtGui.QFont()
@@ -182,6 +234,8 @@ class Ui_Quantum_Encryption_MainWindow(object):
         font.setWeight(75)
         self.btnEncrypt.setFont(font)
         self.btnEncrypt.setObjectName("btnEncrypt")
+        
+        
         Quantum_Encryption_MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(Quantum_Encryption_MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1248, 26))
@@ -213,13 +267,33 @@ class Ui_Quantum_Encryption_MainWindow(object):
         self.grpBox_AlgorithmTest.setTitle(_translate("Quantum_Encryption_MainWindow", "Select Algorithm from Algorithm 1 to test"))
         self.btnDecrypt.setText(_translate("Quantum_Encryption_MainWindow", "Decrypt"))
         self.btnEncrypt.setText(_translate("Quantum_Encryption_MainWindow", "Encrypt"))
+    
+    def reset_form(self):
+        self.rdLattice1.setChecked(False)
+        self.rdHash1.setChecked(False)
+        self.rdCode1.setChecked(False)
+        
+        self.rdLattice2.setChecked(False)
+        self.rdHash2.setChecked(False)
+        self.rdCode2.setChecked(False)
+        
+        self.txtBoxEncrypt.setText("")
+        self.txtBoxDecrypt.setText("")
+        self.txtBoxKey1.setText("")
+        self.txtBoxKey2.setText("")
+        
+        self.graphMemoryUsage.clear()
+        self.graphPerformance.clear()
+        self.graphSecurity.clear()
+        
+        
 
 
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    Quantum_Encryption_MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_Quantum_Encryption_MainWindow()
-    ui.setupUi(Quantum_Encryption_MainWindow)
-    Quantum_Encryption_MainWindow.show()
-    sys.exit(app.exec_())
+# if __name__ == "__main__":
+#     import sys
+#     app = QtWidgets.QApplication(sys.argv)
+#     Quantum_Encryption_MainWindow = QtWidgets.QMainWindow()
+#     ui = Ui_Quantum_Encryption_MainWindow()
+#     ui.setupUi(Quantum_Encryption_MainWindow)
+#     Quantum_Encryption_MainWindow.show()
+#     sys.exit(app.exec_())
