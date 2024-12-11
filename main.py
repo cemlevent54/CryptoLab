@@ -14,7 +14,9 @@ from Forms.SymmetricEncryptionAlgorithms import Ui_SymmetricEncryption_MainWindo
 from Forms.AsymmetricEncryptionAlgorithms import Ui_Asymmetic_Encryption_MainWindow
 from Forms.CompositeEncryptionAlgorithms import Ui_Hybrid_Algorithms_MainWindow
 from Forms.modernEncryptionAlgorithms import Ui_Modern_Encryption_MainWindow
+from Forms.HashingAlgorithms import Ui_Hashing_Algorithms_MainWindow
 # Algorithms
+from HashingAlgorithms.HashingAlgorithms import HashingAlgorithmsEncrypt
 from AsymmetricAlgorithms.AsymmetricDecryptionAlgorithms import AsymmetricDecryptionAlgorithms
 from AsymmetricAlgorithms.AsymmetricEncryptionAlgorithms import AsymmetricEncryptionAlgorithms
 from SymmetricAlgorithms.SymmetricDecryptionAlgorithms import SymmetricDecryptionAlgorithms
@@ -30,6 +32,7 @@ from QuantumAlgorithms.QuantumDecryptionAlgorithms import QuantumDecryptionAlgor
 import PyQt5.QtCore as QtCore
 from base64 import encode, decode
 #comparison
+from CompareAlgorithms.CompareHashAlgorithms import HashingAlgorithmsComparator
 from CompareAlgorithms.CompareQuantumAlgorithms import QuantumAlgorithmComparator
 from CompareAlgorithms.CompareModernAlgorithms import ModernAlgorithmComparator
 from CompareAlgorithms.CompareSymmetricAlgorithms import SymmetricAlgorithmComparator
@@ -46,6 +49,9 @@ from Crypto.Cipher import PKCS1_OAEP
 from cryptography.hazmat.primitives.asymmetric import ec
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.backends import default_backend
+import hashlib
+import zlib
+from argon2 import PasswordHasher
 
 
 
@@ -62,6 +68,7 @@ class MainApp(QMainWindow):
         self.ui.btnHybridAlgorithms.clicked.connect(self.openCompositeEncryption)
         self.ui.btnModernAlgorithms.clicked.connect(self.openModernEncryption)
         self.ui.btnQuantumAlgorithms.clicked.connect(self.openQuantumEncryption)
+        self.ui.btnHashingAlgorithms.clicked.connect(self.openHashingAlgorithms)
         
     def openOldEncryption(self):
         # Eski şifreleme penceresini başlat ve göster
@@ -97,6 +104,12 @@ class MainApp(QMainWindow):
         # Kuantum şifreleme penceresini başlat ve göster
         self.quantumEncryption = QuantumEncryption(self)
         self.quantumEncryption.show()
+        self.hide()
+        
+    def openHashingAlgorithms(self):
+        # Hashlama algoritmaları penceresini başlat ve göster
+        self.hashingAlgorithms = HashAlgorithms(self)
+        self.hashingAlgorithms.show()
         self.hide()
 
 
@@ -1797,6 +1810,179 @@ class QuantumEncryption(QtWidgets.QMainWindow):
         
         graphics_view.fitInView(scene.itemsBoundingRect(), QtCore.Qt.KeepAspectRatio)
     
+class HashAlgorithms(QtWidgets.QMainWindow):
+    original_text = ""
+    def __init__(self,parent=None):
+        super(HashAlgorithms,self).__init__()
+        self.ui = Ui_Hashing_Algorithms_MainWindow()
+        self.ui.setupUi(self)
+        self.parent = parent
+        
+        self.ui.btnEncrypt.clicked.connect(self.btn_encrypt)
+        self.ui.btnDecrypt.clicked.connect(self.btn_decrypt)
+        self.ui.btnCompare.clicked.connect(self.compare_algorithms)
+        
+    def closeEvent(self, event):
+        # Pencere kapanırken ana pencereyi yeniden göster
+        if self.parent:
+            self.parent.show()
+        event.accept()
+        
+    def get_selected_algorithm(self, groupbox):
+        """Seçili algoritmaları bulur."""
+        for child in groupbox.findChildren(QtWidgets.QRadioButton):
+            if child.isChecked():
+                return child.text()
+        return None
+    
+    
+    def btn_encrypt(self):
+        text = self.ui.txtBoxEncrypt.toPlainText()
+        if not text:
+            QMessageBox.warning(self, "Input Error", "Please enter text to hash!")
+            return
+
+        # Seçili algoritmayı al
+        selected_algorithm = self.get_selected_algorithm(self.ui.grpBox_Algorithm1)
+        if not selected_algorithm:
+            QMessageBox.warning(self, "Selection Error", "Please select an algorithm!")
+            return
+        
+        hash_algorithm = HashingAlgorithmsEncrypt()
+        print(f"Selected Algorithm: {selected_algorithm}")
+
+        # UI ile uyumlu algoritma isimleri haritası
+        hash_functions = {
+            "MD5": hash_algorithm.md5,
+            "SHA 1": hash_algorithm.sha1,         
+            "SHA 256": hash_algorithm.sha256,      
+            "SHA 512": hash_algorithm.sha512,      
+            "Blake2b": hash_algorithm.blake2b,
+            "Blake2s": hash_algorithm.blake2s,
+            "Argon2": hash_algorithm.argon2,
+            "CRC32": hash_algorithm.crc32
+        }
+
+        # Hash algoritmasını seç ve çalıştır
+        hash_algorithm = HashingAlgorithmsEncrypt()
+        if selected_algorithm in hash_functions:
+            hashed_text = hash_functions[selected_algorithm](text)
+            print(f"{selected_algorithm} Hash: {hashed_text}")
+            self.original_text = hashed_text
+            self.ui.txtBoxDecrypt.setText(hashed_text)
+            self.ui.txtBoxEncrypt.setText("")
+            self.ui.txtBoxKey1.setText("")
+        else:
+            QMessageBox.warning(self, "Unsupported Algorithm", "The selected algorithm is not supported!")
+    
+    def btn_decrypt(self):
+        self.ui.txtBoxEncrypt.setText("Hashing is irreversible!")
+        self.ui.txtBoxDecrypt.setText("")
+        self.ui.txtBoxKey2.setText("")
+        
+    def compare_algorithms(self):
+        map_selected_algorithm = {
+            "MD5": "MD5",
+            "SHA 1": "SHA 1",
+            "SHA 256": "SHA 256",
+            "SHA 512": "SHA 512",
+            "Blake2b": "Blake2b",
+            "Blake2s": "Blake2s",
+            "Argon2": "Argon2",
+            "CRC32": "CRC32"
+        }
+        
+        selected_algorithm_1 = self.get_selected_algorithm(self.ui.grpBox_Algorithm1)
+        selected_algorithm_2 = self.get_selected_algorithm(self.ui.grpBox_Algorithm2)
+        print(f"Selected Algorithms: {selected_algorithm_1} vs {selected_algorithm_2}")
+        
+        mapped_algorithm_1 = map_selected_algorithm.get(selected_algorithm_1)  
+        mapped_algorithm_2 = map_selected_algorithm.get(selected_algorithm_2)
+        print(f"Mapped Algorithms: {mapped_algorithm_1} vs {mapped_algorithm_2}")
+        
+        if not mapped_algorithm_1 or not mapped_algorithm_2:
+            QMessageBox.warning(self, "Selection Error", "Please select both algorithms to compare.")
+            return
+        
+        hash_algorithm = HashingAlgorithmsEncrypt()
+        
+        algorithm_map = {
+            "MD5": lambda text : hash_algorithm.md5(text),
+            "SHA 1": lambda text : hash_algorithm.sha1(text),
+            "SHA 256": lambda text : hash_algorithm.sha256(text),
+            "SHA 512": lambda text : hash_algorithm.sha512(text),
+            "Blake2b": lambda text : hash_algorithm.blake2b(text),
+            "Blake2s": lambda text : hash_algorithm.blake2s(text),
+            "Argon2": lambda text : hash_algorithm.argon2(text),
+            "CRC32": lambda text : hash_algorithm.crc32(text),
+        }
+        
+        algo1 = algorithm_map.get(mapped_algorithm_1)
+        algo2 = algorithm_map.get(mapped_algorithm_2)
+        
+        if not algo1 or not algo2:
+            QMessageBox.warning(self, "Algorithm Error", "One of the selected algorithms is not supported.")
+            return
+        
+        comparator = HashingAlgorithmsComparator(algo1, algo2)
+        test_data = "exampledatafortestingalgorithms"
+        key_space = 2 ** 16
+        comparison_results = comparator.compare_algorithms(test_data, key_space)
+        
+        categories = ["Performance", "Security", "Memory Usage"]
+        
+        data1 = [
+            comparison_results["algo1_performance"],
+            comparison_results["algo1_frequency"],
+            comparison_results["algo1_memory"],
+        ]
+        
+        data2 = [
+            comparison_results["algo2_performance"],
+            comparison_results["algo2_frequency"],
+            comparison_results["algo2_memory"],
+        ]
+        
+        # graphs
+        
+        self.plot_to_graphicsview(self.ui.graphPerformance, "Performance Comparison", [data1[0]], [data2[0]], ["Performance"])
+        self.plot_to_graphicsview(self.ui.graphSecurity, "Security Comparison", [data1[1]], [data2[1]], ["Security"])
+        self.plot_to_graphicsview(self.ui.graphMemoryUsage, "Memory Usage", [data1[2]], [data2[2]], ["Memory"])
+        
+    
+    def plot_to_graphicsview(self,graphics_view,title,data1,data2,categories):
+        """
+        Matplotlib grafiğini QGraphicsView içinde göstermek için.
+        :param graphics_view: QGraphicsView bileşeni.
+        :param title: Grafik başlığı.
+        :param data1: Birinci algoritmanın verileri.
+        :param data2: İkinci algoritmanın verileri.
+        :param categories: Kategoriler (örneğin: Performans, Güvenlik).
+        """
+        
+        plt.figure(figsize=(3.5, 2.5))  # QGraphicsView boyutuna uygun bir boyut seç
+        x = range(len(categories))
+        plt.bar(x, data1, width=0.2, label="Algorithm 1", align="center")
+        plt.bar([p + 0.4 for p in x], data2, width=0.2, label="Algorithm 2", align="center")
+        plt.xticks([p + 0.2 for p in x], categories)
+        plt.xlabel("Metrics")
+        plt.ylabel("Scores")
+        plt.title(title)
+        plt.legend()
+        plt.tight_layout()
+        
+        temp_file = "temp_graph.png"
+        plt.savefig(temp_file, dpi=100)
+        plt.close()
+        
+        scene = QGraphicsScene()
+        pixmap = QPixmap(temp_file)
+        scene.addPixmap(pixmap)
+        graphics_view.setScene(scene)
+        
+        graphics_view.fitInView(scene.itemsBoundingRect(), QtCore.Qt.KeepAspectRatio)
+        
+        
     
 if __name__ == "__main__":
     # PyQt5 uygulamasını başlat
