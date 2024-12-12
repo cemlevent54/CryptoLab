@@ -1,5 +1,6 @@
-algorithm_map = {
-            "RSA": lambda text: AsymmetricEncryptionAlgorithms().rsa_encrypt(text),
-            "DSA": lambda text: AsymmetricEncryptionAlgorithms().dsa_encrypt(text),
-            "Diffie-Hellman": lambda text: AsymmetricEncryptionAlgorithms().diffie_hellman_text_key_exchange(text),
-        }
+if not mapped_symmetric_algorithm or not mapped_asymmetric_algorithm:
+            QMessageBox.warning(self, "Selection Error", "Please select both algorithms to compare.")
+            return
+
+        print(f"Mapped Symmetric Algorithm: {mapped_symmetric_algorithm}")
+        print(f"Mapped Asy
