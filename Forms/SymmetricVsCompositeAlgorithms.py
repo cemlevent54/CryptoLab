@@ -11,12 +11,13 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_Symmetric_Asymmetric_MainWindow(object):
-    def setupUi(self, Symmetric_Asymmetric_MainWindow):
-        Symmetric_Asymmetric_MainWindow.setObjectName("Symmetric_Asymmetric_MainWindow")
-        Symmetric_Asymmetric_MainWindow.resize(1250, 861)
-        self.centralwidget = QtWidgets.QWidget(Symmetric_Asymmetric_MainWindow)
+class Ui_Symmetric_Composite_MainWindow(object):
+    def setupUi(self, Symmetric_Composite_MainWindow):
+        Symmetric_Composite_MainWindow.setObjectName("Symmetric_Composite_MainWindow")
+        Symmetric_Composite_MainWindow.resize(1250, 861)
+        self.centralwidget = QtWidgets.QWidget(Symmetric_Composite_MainWindow)
         self.centralwidget.setObjectName("centralwidget")
+        
         self.lblPerformance = QtWidgets.QLabel(self.centralwidget)
         self.lblPerformance.setGeometry(QtCore.QRect(610, 140, 121, 31))
         font = QtGui.QFont()
@@ -26,9 +27,11 @@ class Ui_Symmetric_Asymmetric_MainWindow(object):
         font.setWeight(75)
         self.lblPerformance.setFont(font)
         self.lblPerformance.setObjectName("lblPerformance")
+        
         self.graphSecurity = QtWidgets.QGraphicsView(self.centralwidget)
         self.graphSecurity.setGeometry(QtCore.QRect(900, 480, 271, 221))
         self.graphSecurity.setObjectName("graphSecurity")
+        
         self.lblSecurity = QtWidgets.QLabel(self.centralwidget)
         self.lblSecurity.setGeometry(QtCore.QRect(960, 440, 181, 31))
         font = QtGui.QFont()
@@ -38,9 +41,11 @@ class Ui_Symmetric_Asymmetric_MainWindow(object):
         font.setWeight(75)
         self.lblSecurity.setFont(font)
         self.lblSecurity.setObjectName("lblSecurity")
+        
         self.graphMemoryUsage = QtWidgets.QGraphicsView(self.centralwidget)
         self.graphMemoryUsage.setGeometry(QtCore.QRect(900, 180, 271, 221))
         self.graphMemoryUsage.setObjectName("graphMemoryUsage")
+        
         self.lblMemoryUsage = QtWidgets.QLabel(self.centralwidget)
         self.lblMemoryUsage.setGeometry(QtCore.QRect(950, 140, 181, 31))
         font = QtGui.QFont()
@@ -50,6 +55,7 @@ class Ui_Symmetric_Asymmetric_MainWindow(object):
         font.setWeight(75)
         self.lblMemoryUsage.setFont(font)
         self.lblMemoryUsage.setObjectName("lblMemoryUsage")
+        
         self.lblHeader = QtWidgets.QLabel(self.centralwidget)
         self.lblHeader.setGeometry(QtCore.QRect(330, 20, 491, 61))
         font = QtGui.QFont()
@@ -59,6 +65,7 @@ class Ui_Symmetric_Asymmetric_MainWindow(object):
         font.setWeight(75)
         self.lblHeader.setFont(font)
         self.lblHeader.setObjectName("lblHeader")
+        
         self.grpBox_Algorithm1 = QtWidgets.QGroupBox(self.centralwidget)
         self.grpBox_Algorithm1.setGeometry(QtCore.QRect(30, 90, 311, 321))
         font = QtGui.QFont()
@@ -68,27 +75,43 @@ class Ui_Symmetric_Asymmetric_MainWindow(object):
         font.setWeight(75)
         self.grpBox_Algorithm1.setFont(font)
         self.grpBox_Algorithm1.setObjectName("grpBox_Algorithm1")
+        
         self.rdAES = QtWidgets.QRadioButton(self.grpBox_Algorithm1)
         self.rdAES.setGeometry(QtCore.QRect(10, 30, 371, 31))
         self.rdAES.setObjectName("rdAES")
+        # self.rdAES.setChecked(False)
+        
         self.rdDES1 = QtWidgets.QRadioButton(self.grpBox_Algorithm1)
         self.rdDES1.setGeometry(QtCore.QRect(10, 70, 281, 20))
         self.rdDES1.setObjectName("rdDES1")
+        # self.rdDES1.setChecked(False)
+        
         self.rd3DES1 = QtWidgets.QRadioButton(self.grpBox_Algorithm1)
         self.rd3DES1.setGeometry(QtCore.QRect(10, 100, 281, 20))
         self.rd3DES1.setObjectName("rd3DES1")
+        # self.rd3DES1.setChecked(False)
+        
         self.rdBlowfish = QtWidgets.QRadioButton(self.grpBox_Algorithm1)
         self.rdBlowfish.setGeometry(QtCore.QRect(10, 140, 281, 20))
         self.rdBlowfish.setObjectName("rdBlowfish")
+        # self.rdBlowfish.setChecked(False)
+        
         self.rdRC4 = QtWidgets.QRadioButton(self.grpBox_Algorithm1)
         self.rdRC4.setGeometry(QtCore.QRect(10, 180, 281, 20))
         self.rdRC4.setObjectName("rdRC4")
+        # self.rdRC4.setChecked(False)
+        
         self.rdChaCha20 = QtWidgets.QRadioButton(self.grpBox_Algorithm1)
         self.rdChaCha20.setGeometry(QtCore.QRect(10, 220, 281, 20))
         self.rdChaCha20.setObjectName("rdChaCha20")
+        # self.rdChaCha20.setChecked(False)
+        
         self.rdTwofish = QtWidgets.QRadioButton(self.grpBox_Algorithm1)
         self.rdTwofish.setGeometry(QtCore.QRect(10, 260, 281, 20))
         self.rdTwofish.setObjectName("rdTwofish")
+        # self.rdTwofish.setChecked(False)
+        
+        # group box for composite algorithms
         self.grpBox_Algorithm2 = QtWidgets.QGroupBox(self.centralwidget)
         self.grpBox_Algorithm2.setGeometry(QtCore.QRect(30, 450, 311, 241))
         font = QtGui.QFont()
@@ -98,6 +121,8 @@ class Ui_Symmetric_Asymmetric_MainWindow(object):
         font.setWeight(75)
         self.grpBox_Algorithm2.setFont(font)
         self.grpBox_Algorithm2.setObjectName("grpBox_Algorithm2")
+        
+        #
         self.rdRSAAES = QtWidgets.QRadioButton(self.grpBox_Algorithm2)
         self.rdRSAAES.setGeometry(QtCore.QRect(10, 40, 281, 31))
         font = QtGui.QFont()
@@ -107,15 +132,32 @@ class Ui_Symmetric_Asymmetric_MainWindow(object):
         font.setWeight(75)
         self.rdRSAAES.setFont(font)
         self.rdRSAAES.setObjectName("rdRSAAES")
-        self.rdDSA = QtWidgets.QRadioButton(self.grpBox_Algorithm2)
-        self.rdDSA.setGeometry(QtCore.QRect(10, 90, 271, 20))
+        # self.rdRSAAES.setChecked(False)
+        
+        self.rdECCAES = QtWidgets.QRadioButton(self.grpBox_Algorithm2)
+        self.rdECCAES.setGeometry(QtCore.QRect(10, 90, 271, 20))
         font = QtGui.QFont()
         font.setFamily("Rockwell")
         font.setPointSize(10)
         font.setBold(True)
         font.setWeight(75)
-        self.rdDSA.setFont(font)
-        self.rdDSA.setObjectName("rdDSA")
+        self.rdECCAES.setFont(font)
+        self.rdECCAES.setObjectName("rdECCAES")
+        # self.rdECCAES.setChecked(False)
+        
+        # set checked to false
+        self.rdAES.setChecked(False)
+        self.rdDES1.setChecked(False)
+        self.rd3DES1.setChecked(False)
+        self.rdBlowfish.setChecked(False)
+        self.rdRC4.setChecked(False)
+        self.rdChaCha20.setChecked(False)
+        self.rdTwofish.setChecked(False)
+        
+        self.rdRSAAES.setChecked(False)
+        self.rdECCAES.setChecked(False)
+        
+        # compare button
         self.btnCompare = QtWidgets.QPushButton(self.centralwidget)
         self.btnCompare.setGeometry(QtCore.QRect(540, 470, 211, 51))
         font = QtGui.QFont()
@@ -125,47 +167,63 @@ class Ui_Symmetric_Asymmetric_MainWindow(object):
         font.setWeight(75)
         self.btnCompare.setFont(font)
         self.btnCompare.setObjectName("btnCompare")
+        
         self.graphPerformance = QtWidgets.QGraphicsView(self.centralwidget)
         self.graphPerformance.setGeometry(QtCore.QRect(530, 180, 271, 221))
         self.graphPerformance.setObjectName("graphPerformance")
-        Symmetric_Asymmetric_MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(Symmetric_Asymmetric_MainWindow)
+        
+        Symmetric_Composite_MainWindow.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(Symmetric_Composite_MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1250, 26))
         self.menubar.setObjectName("menubar")
-        Symmetric_Asymmetric_MainWindow.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(Symmetric_Asymmetric_MainWindow)
+        Symmetric_Composite_MainWindow.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(Symmetric_Composite_MainWindow)
         self.statusbar.setObjectName("statusbar")
-        Symmetric_Asymmetric_MainWindow.setStatusBar(self.statusbar)
+        Symmetric_Composite_MainWindow.setStatusBar(self.statusbar)
 
-        self.retranslateUi(Symmetric_Asymmetric_MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(Symmetric_Asymmetric_MainWindow)
+        self.retranslateUi(Symmetric_Composite_MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(Symmetric_Composite_MainWindow)
 
-    def retranslateUi(self, Symmetric_Asymmetric_MainWindow):
+    def retranslateUi(self, Symmetric_Composite_MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        Symmetric_Asymmetric_MainWindow.setWindowTitle(_translate("Symmetric_Asymmetric_MainWindow", "MainWindow"))
-        self.lblPerformance.setText(_translate("Symmetric_Asymmetric_MainWindow", "Performance"))
-        self.lblSecurity.setText(_translate("Symmetric_Asymmetric_MainWindow", "Frequency Analysis"))
-        self.lblMemoryUsage.setText(_translate("Symmetric_Asymmetric_MainWindow", "Memory Usage"))
-        self.lblHeader.setText(_translate("Symmetric_Asymmetric_MainWindow", "Symmetric vs Hybrid Algorithms"))
-        self.grpBox_Algorithm1.setTitle(_translate("Symmetric_Asymmetric_MainWindow", "Select Algorithm 1 "))
-        self.rdAES.setText(_translate("Symmetric_Asymmetric_MainWindow", "AES"))
-        self.rdDES1.setText(_translate("Symmetric_Asymmetric_MainWindow", "DES"))
-        self.rd3DES1.setText(_translate("Symmetric_Asymmetric_MainWindow", "3DES"))
-        self.rdBlowfish.setText(_translate("Symmetric_Asymmetric_MainWindow", "Blowfish"))
-        self.rdRC4.setText(_translate("Symmetric_Asymmetric_MainWindow", "RC4"))
-        self.rdChaCha20.setText(_translate("Symmetric_Asymmetric_MainWindow", "ChaCha20"))
-        self.rdTwofish.setText(_translate("Symmetric_Asymmetric_MainWindow", "Twofish"))
-        self.grpBox_Algorithm2.setTitle(_translate("Symmetric_Asymmetric_MainWindow", "Select Algorithm 2"))
-        self.rdRSAAES.setText(_translate("Symmetric_Asymmetric_MainWindow", "RSA + AES"))
-        self.rdDSA.setText(_translate("Symmetric_Asymmetric_MainWindow", "ECC + AES"))
-        self.btnCompare.setText(_translate("Symmetric_Asymmetric_MainWindow", "Compare Algorithms"))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    Symmetric_Asymmetric_MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_Symmetric_Asymmetric_MainWindow()
-    ui.setupUi(Symmetric_Asymmetric_MainWindow)
-    Symmetric_Asymmetric_MainWindow.show()
-    sys.exit(app.exec_())
+        Symmetric_Composite_MainWindow.setWindowTitle(_translate("Symmetric_Composite_MainWindow", "MainWindow"))
+        self.lblPerformance.setText(_translate("Symmetric_Composite_MainWindow", "Performance"))
+        self.lblSecurity.setText(_translate("Symmetric_Composite_MainWindow", "Frequency Analysis"))
+        self.lblMemoryUsage.setText(_translate("Symmetric_Composite_MainWindow", "Memory Usage"))
+        self.lblHeader.setText(_translate("Symmetric_Composite_MainWindow", "Symmetric vs Hybrid Algorithms"))
+        self.grpBox_Algorithm1.setTitle(_translate("Symmetric_Composite_MainWindow", "Select Algorithm 1 "))
+        self.rdAES.setText(_translate("Symmetric_Composite_MainWindow", "AES"))
+        self.rdDES1.setText(_translate("Symmetric_Composite_MainWindow", "DES"))
+        self.rd3DES1.setText(_translate("Symmetric_Composite_MainWindow", "3DES"))
+        self.rdBlowfish.setText(_translate("Symmetric_Composite_MainWindow", "Blowfish"))
+        self.rdRC4.setText(_translate("Symmetric_Composite_MainWindow", "RC4"))
+        self.rdChaCha20.setText(_translate("Symmetric_Composite_MainWindow", "ChaCha20"))
+        self.rdTwofish.setText(_translate("Symmetric_Composite_MainWindow", "Twofish"))
+        self.grpBox_Algorithm2.setTitle(_translate("Symmetric_Composite_MainWindow", "Select Algorithm 2"))
+        self.rdRSAAES.setText(_translate("Symmetric_Composite_MainWindow", "RSA + AES"))
+        self.rdECCAES.setText(_translate("Symmetric_Composite_MainWindow", "ECC + AES"))
+        self.btnCompare.setText(_translate("Symmetric_Composite_MainWindow", "Compare Algorithms"))
+        
+    
+    def reset_form(self):
+        self.rdAES.setChecked(False)
+        self.rdDES1.setChecked(False)
+        self.rd3DES1.setChecked(False)
+        self.rdBlowfish.setChecked(False)
+        self.rdRC4.setChecked(False)
+        self.rdChaCha20.setChecked(False)
+        self.rdTwofish.setChecked(False)
+        self.rdRSAAES.setChecked(False)
+        self.rdECCAES.setChecked(False)
+        self.graphMemoryUsage.clear()
+        self.graphPerformance.clear()
+        self.graphSecurity.clear()    
+    
+# if __name__ == "__main__":
+#     import sys
+#     app = QtWidgets.QApplication(sys.argv)
+#     Symmetric_Asymmetric_MainWindow = QtWidgets.QMainWindow()
+#     ui = Ui_Symmetric_Asymmetric_MainWindow()
+#     ui.setupUi(Symmetric_Asymmetric_MainWindow)
+#     Symmetric_Asymmetric_MainWindow.show()
+#     sys.exit(app.exec_())

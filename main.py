@@ -16,6 +16,7 @@ from Forms.AsymmetricEncryptionAlgorithms import Ui_Asymmetic_Encryption_MainWin
 from Forms.CompositeEncryptionAlgorithms import Ui_Hybrid_Algorithms_MainWindow
 from Forms.modernEncryptionAlgorithms import Ui_Modern_Encryption_MainWindow
 from Forms.HashingAlgorithms import Ui_Hashing_Algorithms_MainWindow
+from Forms.SymmetricVsCompositeAlgorithms import Ui_Symmetric_Composite_MainWindow
 # Algorithms
 from HashingAlgorithms.HashingAlgorithms import HashingAlgorithmsEncrypt
 from AsymmetricAlgorithms.AsymmetricDecryptionAlgorithms import AsymmetricDecryptionAlgorithms
@@ -33,6 +34,7 @@ from QuantumAlgorithms.QuantumDecryptionAlgorithms import QuantumDecryptionAlgor
 import PyQt5.QtCore as QtCore
 from base64 import encode, decode
 #comparison
+from CompareAlgorithms.CompareSymmetricCompositeAlgorithms import SymmetricHybridComparator
 from CompareAlgorithms.CompareSymmetricAsymmetricAlgorihms import SymmetricAsymmetricComparator
 from CompareAlgorithms.CompareHashAlgorithms import HashingAlgorithmsComparator
 from CompareAlgorithms.CompareQuantumAlgorithms import QuantumAlgorithmComparator
@@ -72,7 +74,8 @@ class MainApp(QMainWindow):
         self.ui.btnQuantumAlgorithms.clicked.connect(self.openQuantumEncryption)
         self.ui.btnHashingAlgorithms.clicked.connect(self.openHashingAlgorithms)
         self.ui.btnSymmetrivsAsymmetric.clicked.connect(self.openSymmetricVsAsymmetricAlgorithms)
-        
+        self.ui.btnSymmetrivsHybrid.clicked.connect(self.openSymmetricVsCompositeAlgorithms)
+          
     def openOldEncryption(self):
         # Eski şifreleme penceresini başlat ve göster
         self.oldEncryption = OldEncryption(self)
@@ -119,7 +122,13 @@ class MainApp(QMainWindow):
         self.SymmetricvsAsymmetricAlgorithms = SymmetricvsAsymmetric(self)
         self.SymmetricvsAsymmetricAlgorithms.show()
         self.hide()
-
+    
+    def openSymmetricVsCompositeAlgorithms(self):
+        self.SymmetricvsCompositeAlgorithms = SymmetricvsHybrid(self)
+        self.SymmetricvsCompositeAlgorithms.show()
+        self.hide()
+        
+    
 class OldEncryption(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(OldEncryption, self).__init__()
@@ -2166,7 +2175,159 @@ class SymmetricvsAsymmetric(QtWidgets.QMainWindow):
         
         graphics_view.fitInView(scene.itemsBoundingRect(), QtCore.Qt.KeepAspectRatio)
     
+
+class SymmetricvsHybrid(QtWidgets.QMainWindow):
+    def __init__(self,parent=None):
+        super(SymmetricvsHybrid,self).__init__()
+        self.ui = Ui_Symmetric_Composite_MainWindow()
+        self.ui.setupUi(self)
+        self.parent = parent
+        
+        self.ui.btnCompare.clicked.connect(self.compare_algorithms)
     
+    def closeEvent(self, event):
+        if self.parent:
+            self.parent.show()
+        event.accept()
+        
+    def get_selected_algorithm(self,groupbox):
+        """Seçili algoritmaları bulur"""
+        for radio_button in groupbox.findChildren(QtWidgets.QRadioButton):
+            if radio_button.isChecked():
+                return [radio_button.text()]
+        return None
+    
+    def get_selected_algorithm_not_list(self,groupbox):
+        """Seçili algoritmaları bulur"""
+        for radio_button in groupbox.findChildren(QtWidgets.QRadioButton):
+            if radio_button.isChecked():
+                return radio_button.text()
+        return None
+    
+    def compare_algorithms(self):
+        text = "exampledatafortestingalgorithms"
+        key_space = 2 ** 16
+        
+        # Seçilebilir algoritmaların eşlenmesi
+        map_selected_symmetric_algorithm = {
+            "AES": "AES",
+            "DES": "DES",
+            "3DES": "3DES",
+            "Blowfish": "Blowfish",
+            "RC4": "RC4",
+            "ChaCha20": "ChaCha20",
+            "Twofish": "Twofish",
+        }
+        
+        map_selected_hybrid_algorithm = {
+            "RSA + AES": "RSA+AES",
+            "ECC + AES": "ECC+AES",
+        }
+        
+        # Seçilen algoritmaları al
+        
+        selected_symmetric_algorithm = self.get_selected_algorithm_not_list(self.ui.grpBox_Algorithm1)
+        selected_hybrid_algorithm = self.get_selected_algorithm_not_list(self.ui.grpBox_Algorithm2)
+        
+        print(f"Selected Symmetric Algorithm: {selected_symmetric_algorithm}")
+        print(f"Selected Hybrid Algorithm: {selected_hybrid_algorithm}")
+        
+        mapped_symmetric_algorithm = map_selected_symmetric_algorithm.get(selected_symmetric_algorithm)
+        mapped_hybrid_algorithm = map_selected_hybrid_algorithm.get(selected_hybrid_algorithm)
+        
+        if not mapped_symmetric_algorithm or not mapped_hybrid_algorithm:
+            QMessageBox.warning(self, "Selection Error", "Please select both algorithms to compare.")
+            return
+        
+        print(f"Mapped Symmetric Algorithm: {mapped_symmetric_algorithm}")
+        print(f"Mapped Hybrid Algorithm: {mapped_hybrid_algorithm}")
+        
+        # Anahtarlar
+        keys = {
+            "AES": os.urandom(16),
+            "DES": os.urandom(8),
+            "3DES": DES3.adjust_key_parity(os.urandom(24)),
+            "RC4": os.urandom(16),
+            "Blowfish": os.urandom(16),
+            "Twofish": os.urandom(16),
+            "ChaCha20": os.urandom(32),
+        }
+
+        # Şifreleme algoritmalarının eşlemesi
+        symmetric_algorithm_map = {
+            "AES": lambda data: SymmetricEncryptionAlgorithms().aes_encrypt(data, key=keys["AES"]),
+            "DES": lambda data: SymmetricEncryptionAlgorithms().des_encrypt(data, key=keys["DES"]),
+            "3DES": lambda data: SymmetricEncryptionAlgorithms().des3_encrypt(data, key=keys["3DES"]),
+            "RC4": lambda data: SymmetricEncryptionAlgorithms().rc4_encrypt(data, key=keys["RC4"]),
+            "Blowfish": lambda data: SymmetricEncryptionAlgorithms().blowfish_encrypt(data, key=keys["Blowfish"]),
+            "Twofish": lambda data: SymmetricEncryptionAlgorithms().twofish_encrypt(data, key=keys["Twofish"]),
+            "ChaCha20": lambda data: SymmetricEncryptionAlgorithms().chacha20_encrypt(data, key=keys["ChaCha20"]),
+        }
+        composite_encrypt = CompositeEncryptionAlgorithms()
+        hybrid_algorithm_map = {
+            "RSA+AES": lambda data: composite_encrypt.rsa_aes_encryption(data,composite_encrypt),
+            "ECC+AES": lambda data: composite_encrypt.ecc_aes_encryption(data,composite_encrypt),
+        }
+        
+        algo1 = symmetric_algorithm_map.get(mapped_symmetric_algorithm)
+        algo2 = hybrid_algorithm_map.get(mapped_hybrid_algorithm)
+        
+        comparator = SymmetricHybridComparator(algo1, algo2)
+        
+        comparison_results = comparator.compare_algorithms(text)
+        
+        categories = ["Performance", "Security", "Memory Usage"]
+        
+        data1 = [
+            comparison_results["algo1_performance"],
+            comparison_results["algo1_frequency"],
+            comparison_results["algo1_memory"],
+        ]
+        data2 = [
+            comparison_results["algo2_performance"],
+            comparison_results["algo2_frequency"],
+            comparison_results["algo2_memory"],
+        ]
+        
+        self.plot_to_graphicsview(self.ui.graphPerformance, "Performance Comparison", [data1[0]], [data2[0]], ["Performance"])
+        self.plot_to_graphicsview(self.ui.graphSecurity, "Security Comparison", [data1[1]], [data2[1]], ["Security"])
+        self.plot_to_graphicsview(self.ui.graphMemoryUsage, "Memory Usage", [data1[2]], [data2[2]], ["Memory"])
+    
+    def plot_to_graphicsview(self, graphics_view, title, data1, data2, categories):
+        """
+        Matplotlib grafiğini QGraphicsView içinde göstermek için.
+        :param graphics_view: QGraphicsView bileşeni.
+        :param title: Grafik başlığı.
+        :param data1: Birinci algoritmanın verileri.
+        :param data2: İkinci algoritmanın verileri.
+        :param categories: Kategoriler (örneğin: Performans, Güvenlik).
+        """
+        
+        plt.figure(figsize=(3.5, 2.5))  # QGraphicsView boyutuna uygun bir boyut seç
+        x = range(len(categories))
+        plt.bar(x, data1, width=0.2, label="Algorithm 1", align="center")
+        plt.bar([p + 0.4 for p in x], data2, width=0.2, label="Algorithm 2", align="center")
+        plt.xticks([p + 0.2 for p in x], categories)
+        plt.xlabel("Metrics")
+        plt.ylabel("Scores")
+        plt.title(title)
+        plt.legend()
+        plt.tight_layout()
+        
+        temp_file = "temp_graph.png"
+        plt.savefig(temp_file, dpi=100)
+        plt.close()
+        
+        scene = QGraphicsScene()
+        pixmap = QPixmap(temp_file)
+        scene.addPixmap(pixmap)
+        graphics_view.setScene(scene)
+        
+        graphics_view.fitInView(scene.itemsBoundingRect(), QtCore.Qt.KeepAspectRatio)
+    
+    
+        
+        
         
     
 if __name__ == "__main__":
