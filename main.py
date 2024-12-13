@@ -7,6 +7,7 @@ from Crypto.Cipher import DES3
 
 import matplotlib.pyplot as plt
 # Forms 
+from Forms.ModernVsOldAlgorithms import Ui_Modern_Old_MainWindow
 from Forms.SymmetricVsAsymmetricAlgorithms import Ui_Symmetric_Asymmetric_MainWindow
 from Forms.QuantumEncryptionAlgorithms import Ui_Quantum_Encryption_MainWindow
 from Forms.MainForm import Ui_MainWindow
@@ -34,6 +35,7 @@ from QuantumAlgorithms.QuantumDecryptionAlgorithms import QuantumDecryptionAlgor
 import PyQt5.QtCore as QtCore
 from base64 import encode, decode
 #comparison
+from CompareAlgorithms.CompareModernOldAlgorithm import ModernOldComparator
 from CompareAlgorithms.CompareSymmetricCompositeAlgorithms import SymmetricHybridComparator
 from CompareAlgorithms.CompareSymmetricAsymmetricAlgorihms import SymmetricAsymmetricComparator
 from CompareAlgorithms.CompareHashAlgorithms import HashingAlgorithmsComparator
@@ -75,7 +77,8 @@ class MainApp(QMainWindow):
         self.ui.btnHashingAlgorithms.clicked.connect(self.openHashingAlgorithms)
         self.ui.btnSymmetrivsAsymmetric.clicked.connect(self.openSymmetricVsAsymmetricAlgorithms)
         self.ui.btnSymmetrivsHybrid.clicked.connect(self.openSymmetricVsCompositeAlgorithms)
-          
+        self.ui.btnModernvsOld.clicked.connect(self.openModernVsOldAlgorithms)
+        
     def openOldEncryption(self):
         # Eski şifreleme penceresini başlat ve göster
         self.oldEncryption = OldEncryption(self)
@@ -128,6 +131,12 @@ class MainApp(QMainWindow):
         self.SymmetricvsCompositeAlgorithms.show()
         self.hide()
         
+    def openModernVsOldAlgorithms(self):
+        self.ModernvsOldAlgorithms = ModernvsOld(self)
+        self.ModernvsOldAlgorithms.show()
+        self.hide()
+    
+    
     
 class OldEncryption(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
@@ -2326,7 +2335,150 @@ class SymmetricvsHybrid(QtWidgets.QMainWindow):
         graphics_view.fitInView(scene.itemsBoundingRect(), QtCore.Qt.KeepAspectRatio)
     
     
+class ModernvsOld(QtWidgets.QMainWindow):
+    def __init__(self,parent=None):
+        super(ModernvsOld,self).__init__()
+        self.ui = Ui_Modern_Old_MainWindow()
+        self.ui.setupUi(self)
+        self.parent = parent
         
+        # buton olayları
+        self.ui.btnCompare.clicked.connect(self.compare_algorithms)
+    
+    def closeEvent(self, event):
+        if self.parent:
+            self.parent.show()
+        event.accept()
+        
+    def get_selected_algorithm(self,groupbox):
+        """Seçili algoritmaları bulur"""
+        for radio_button in groupbox.findChildren(QtWidgets.QRadioButton):
+            if radio_button.isChecked():
+                return [radio_button.text()]
+        return None
+    
+    def get_selected_algorithm_not_list(self,groupbox):
+        """Seçili algoritmaları bulur"""
+        for radio_button in groupbox.findChildren(QtWidgets.QRadioButton):
+            if radio_button.isChecked():
+                return radio_button.text()
+        return None
+    
+    def compare_algorithms(self):
+        text = "exampledatafortestingalgorithms"
+        key_space = 2 ** 16
+        
+        map_selected_modern_algorithm = {
+            "AES - GCM": "AES-GCM",
+            "RSA - PSS": "RSA-PSS",
+        }
+        
+        map_selected_old_algorithm = {
+            "Caesar Cipher": "Caesar Cipher",
+            "Vigenere Cipher": "Vigenere Cipher",
+            "Transposition Cipher": "Transposition Cipher",
+            "Substitution Cipher": "Substitution Cipher",
+            "Playfair Cipher": "Playfair Cipher",
+            "Enigma Machine": "Enigma Machine",
+        }
+        
+        selected_modern_algorithm = self.get_selected_algorithm_not_list(self.ui.grpBox_Algorithm1)
+        selected_old_algorithm = self.get_selected_algorithm_not_list(self.ui.grpBox_Algorithm2)
+        
+        print(f"Selected Modern Algorithm: {selected_modern_algorithm}")
+        print(f"Selected Old Algorithm: {selected_old_algorithm}")
+        
+        mapped_modern_algorithm = map_selected_modern_algorithm.get(selected_modern_algorithm)
+        mapped_old_algorithm = map_selected_old_algorithm.get(selected_old_algorithm)
+        
+        if not mapped_modern_algorithm or not mapped_old_algorithm:
+            QMessageBox.warning(self, "Selection Error", "Please select both algorithms to compare.")
+            return
+        
+        print(f"Mapped Modern Algorithm: {mapped_modern_algorithm}")
+        print(f"Mapped Old Algorithm: {mapped_old_algorithm}")
+        
+        aes_key_for_modern_algorithm = AESGCMEncryption.generate_aes_key()
+        print(f"AES Key for Modern Algorithm: {aes_key_for_modern_algorithm}")
+        rsa_key_pair_for_modern_algorithm = RSA.generate(2048)
+        private_key_for_modern_algorithm = rsa_key_pair_for_modern_algorithm.export_key()
+        public_key_for_modern_algorithm = rsa_key_pair_for_modern_algorithm.publickey().export_key()
+        print(f"RSA Private Key for Modern Algorithm: {private_key_for_modern_algorithm}")
+        print(f"RSA Public Key for Modern Algorithm: {public_key_for_modern_algorithm}")
+        
+        modern_algorithm_map = {
+            "AES-GCM": lambda data: AESGCMEncryption().aes_gcm_encrypt(data, aes_key_for_modern_algorithm),
+            "RSA-PSS": lambda data: RSAPSS().rsa_pss_sign(data, private_key_for_modern_algorithm),
+        }
+        
+        old_algorithm_map = {
+            "Caesar Cipher": lambda text: OldEncryptionAlgorithms().caesar_cipher(text, shift=3),
+            "Vigenere Cipher": lambda text: OldEncryptionAlgorithms().vigenere_cipher(text, key="AYUSH"),
+            "Substitution Cipher": lambda text: OldEncryptionAlgorithms().substitution_cipher(text, key="QWERTYUIOPASDFGHJKLZXCVBNM"),
+            "Transposition Cipher": lambda text: OldEncryptionAlgorithms().transposition_cipher(text, key=5),
+            "Playfair Cipher": lambda text: OldEncryptionAlgorithms().playfair_cipher(text, key="KEYWORD"),
+            "Enigma Machine": lambda text: OldEncryptionAlgorithms().enigma_machine(text, key="ROTOR"),
+        }
+        
+        algo1 = modern_algorithm_map.get(mapped_modern_algorithm)
+        algo2 = old_algorithm_map.get(mapped_old_algorithm)
+        
+        comparator = ModernOldComparator(algo1, algo2)
+        comparison_results = comparator.compare_algorithms(text)
+        
+        categories = ["Performance", "Security", "Memory Usage"]
+        
+        data1 = [
+            comparison_results["algo1_performance"],
+            comparison_results["algo1_frequency"],
+            comparison_results["algo1_memory"],
+        ]
+        
+        data2 = [
+            comparison_results["algo2_performance"],
+            comparison_results["algo2_frequency"],
+            comparison_results["algo2_memory"],
+        ]
+        
+        self.plot_to_graphicsview(self.ui.graphPerformance, "Performance Comparison", [data1[0]], [data2[0]], ["Performance"])
+        self.plot_to_graphicsview(self.ui.graphSecurity, "Security Comparison", [data1[1]], [data2[1]], ["Security"])
+        self.plot_to_graphicsview(self.ui.graphMemoryUsage, "Memory Usage", [data1[2]], [data2[2]], ["Memory"])
+        
+        
+    
+    def plot_to_graphicsview(self,graphics_view,title,data1,data2,categories):
+        """
+        Matplotlib grafiğini QGraphicsView içinde göstermek için.
+        :param graphics_view: QGraphicsView bileşeni.
+        :param title: Grafik başlığı.
+        :param data1: Birinci algoritmanın verileri.
+        :param data2: İkinci algoritmanın verileri.
+        :param categories: Kategoriler (örneğin: Performans, Güvenlik).
+        """
+        
+        plt.figure(figsize=(3.5, 2.5))  # QGraphicsView boyutuna uygun bir boyut seç
+        x = range(len(categories))
+        plt.bar(x, data1, width=0.2, label="Algorithm 1", align="center")
+        plt.bar([p + 0.4 for p in x], data2, width=0.2, label="Algorithm 2", align="center")
+        plt.xticks([p + 0.2 for p in x], categories)
+        plt.xlabel("Metrics")
+        plt.ylabel("Scores")
+        plt.title(title)
+        plt.legend()
+        plt.tight_layout()
+        
+        temp_file = "temp_graph.png"
+        plt.savefig(temp_file, dpi=100)
+        plt.close()
+        
+        scene = QGraphicsScene()
+        pixmap = QPixmap(temp_file)
+        scene.addPixmap(pixmap)
+        graphics_view.setScene(scene)
+        
+        graphics_view.fitInView(scene.itemsBoundingRect(), QtCore.Qt.KeepAspectRatio)
+    
+    
         
         
     

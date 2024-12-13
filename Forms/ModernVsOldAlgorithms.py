@@ -17,6 +17,7 @@ class Ui_Modern_Old_MainWindow(object):
         Modern_Old_MainWindow.resize(1244, 854)
         self.centralwidget = QtWidgets.QWidget(Modern_Old_MainWindow)
         self.centralwidget.setObjectName("centralwidget")
+        
         self.lblPerformance = QtWidgets.QLabel(self.centralwidget)
         self.lblPerformance.setGeometry(QtCore.QRect(640, 150, 121, 31))
         font = QtGui.QFont()
@@ -26,9 +27,11 @@ class Ui_Modern_Old_MainWindow(object):
         font.setWeight(75)
         self.lblPerformance.setFont(font)
         self.lblPerformance.setObjectName("lblPerformance")
+        
         self.graphSecurity = QtWidgets.QGraphicsView(self.centralwidget)
         self.graphSecurity.setGeometry(QtCore.QRect(930, 490, 271, 221))
         self.graphSecurity.setObjectName("graphSecurity")
+        
         self.lblSecurity = QtWidgets.QLabel(self.centralwidget)
         self.lblSecurity.setGeometry(QtCore.QRect(990, 450, 181, 31))
         font = QtGui.QFont()
@@ -38,9 +41,11 @@ class Ui_Modern_Old_MainWindow(object):
         font.setWeight(75)
         self.lblSecurity.setFont(font)
         self.lblSecurity.setObjectName("lblSecurity")
+        
         self.graphMemoryUsage = QtWidgets.QGraphicsView(self.centralwidget)
         self.graphMemoryUsage.setGeometry(QtCore.QRect(930, 190, 271, 221))
         self.graphMemoryUsage.setObjectName("graphMemoryUsage")
+        
         self.lblMemoryUsage = QtWidgets.QLabel(self.centralwidget)
         self.lblMemoryUsage.setGeometry(QtCore.QRect(980, 150, 181, 31))
         font = QtGui.QFont()
@@ -50,6 +55,7 @@ class Ui_Modern_Old_MainWindow(object):
         font.setWeight(75)
         self.lblMemoryUsage.setFont(font)
         self.lblMemoryUsage.setObjectName("lblMemoryUsage")
+        
         self.lblHeader = QtWidgets.QLabel(self.centralwidget)
         self.lblHeader.setGeometry(QtCore.QRect(450, 30, 421, 61))
         font = QtGui.QFont()
@@ -59,6 +65,7 @@ class Ui_Modern_Old_MainWindow(object):
         font.setWeight(75)
         self.lblHeader.setFont(font)
         self.lblHeader.setObjectName("lblHeader")
+        
         self.grpBox_Algorithm1 = QtWidgets.QGroupBox(self.centralwidget)
         self.grpBox_Algorithm1.setGeometry(QtCore.QRect(60, 90, 311, 321))
         font = QtGui.QFont()
@@ -68,12 +75,15 @@ class Ui_Modern_Old_MainWindow(object):
         font.setWeight(75)
         self.grpBox_Algorithm1.setFont(font)
         self.grpBox_Algorithm1.setObjectName("grpBox_Algorithm1")
+        
         self.rdAESGCM = QtWidgets.QRadioButton(self.grpBox_Algorithm1)
         self.rdAESGCM.setGeometry(QtCore.QRect(10, 60, 371, 31))
         self.rdAESGCM.setObjectName("rdAESGCM")
+        
         self.rdRSAPSS = QtWidgets.QRadioButton(self.grpBox_Algorithm1)
         self.rdRSAPSS.setGeometry(QtCore.QRect(10, 120, 281, 20))
         self.rdRSAPSS.setObjectName("rdRSAPSS")
+        
         self.grpBox_Algorithm2 = QtWidgets.QGroupBox(self.centralwidget)
         self.grpBox_Algorithm2.setGeometry(QtCore.QRect(60, 460, 311, 331))
         font = QtGui.QFont()
@@ -83,6 +93,7 @@ class Ui_Modern_Old_MainWindow(object):
         font.setWeight(75)
         self.grpBox_Algorithm2.setFont(font)
         self.grpBox_Algorithm2.setObjectName("grpBox_Algorithm2")
+        
         self.rdCaesar = QtWidgets.QRadioButton(self.grpBox_Algorithm2)
         self.rdCaesar.setGeometry(QtCore.QRect(10, 40, 281, 31))
         font = QtGui.QFont()
@@ -92,6 +103,7 @@ class Ui_Modern_Old_MainWindow(object):
         font.setWeight(75)
         self.rdCaesar.setFont(font)
         self.rdCaesar.setObjectName("rdCaesar")
+        
         self.rdVigenere = QtWidgets.QRadioButton(self.grpBox_Algorithm2)
         self.rdVigenere.setGeometry(QtCore.QRect(10, 90, 271, 20))
         font = QtGui.QFont()
@@ -101,18 +113,23 @@ class Ui_Modern_Old_MainWindow(object):
         font.setWeight(75)
         self.rdVigenere.setFont(font)
         self.rdVigenere.setObjectName("rdVigenere")
+        
         self.rdSubstitution = QtWidgets.QRadioButton(self.grpBox_Algorithm2)
         self.rdSubstitution.setGeometry(QtCore.QRect(10, 130, 281, 20))
         self.rdSubstitution.setObjectName("rdSubstitution")
+        
         self.rdTransposition = QtWidgets.QRadioButton(self.grpBox_Algorithm2)
         self.rdTransposition.setGeometry(QtCore.QRect(10, 170, 281, 20))
         self.rdTransposition.setObjectName("rdTransposition")
+        
         self.rdPlayfair = QtWidgets.QRadioButton(self.grpBox_Algorithm2)
         self.rdPlayfair.setGeometry(QtCore.QRect(10, 210, 281, 20))
         self.rdPlayfair.setObjectName("rdPlayfair")
+        
         self.rdEnigma = QtWidgets.QRadioButton(self.grpBox_Algorithm2)
         self.rdEnigma.setGeometry(QtCore.QRect(10, 250, 281, 20))
         self.rdEnigma.setObjectName("rdEnigma")
+        
         self.btnCompare = QtWidgets.QPushButton(self.centralwidget)
         self.btnCompare.setGeometry(QtCore.QRect(570, 480, 211, 51))
         font = QtGui.QFont()
@@ -122,9 +139,23 @@ class Ui_Modern_Old_MainWindow(object):
         font.setWeight(75)
         self.btnCompare.setFont(font)
         self.btnCompare.setObjectName("btnCompare")
+        
         self.graphPerformance = QtWidgets.QGraphicsView(self.centralwidget)
         self.graphPerformance.setGeometry(QtCore.QRect(560, 190, 271, 221))
         self.graphPerformance.setObjectName("graphPerformance")
+        
+        # set checked false for all radio buttons
+        self.rdAESGCM.setChecked(False)
+        self.rdRSAPSS.setChecked(False)
+        self.rdCaesar.setChecked(False)
+        self.rdVigenere.setChecked(False)
+        self.rdSubstitution.setChecked(False)
+        self.rdTransposition.setChecked(False)
+        self.rdPlayfair.setChecked(False)
+        self.rdEnigma.setChecked(False)
+        
+        
+        
         Modern_Old_MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(Modern_Old_MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1244, 26))
@@ -155,13 +186,25 @@ class Ui_Modern_Old_MainWindow(object):
         self.rdPlayfair.setText(_translate("Modern_Old_MainWindow", "Playfair Cipher"))
         self.rdEnigma.setText(_translate("Modern_Old_MainWindow", "Enigma Machine"))
         self.btnCompare.setText(_translate("Modern_Old_MainWindow", "Compare Algorithms"))
+        
+    def reset_form(self):
+        self.rdAESGCM.setChecked(False)
+        self.rdRSAPSS.setChecked(False)
+        self.rdCaesar.setChecked(False)
+        self.rdVigenere.setChecked(False)
+        self.rdSubstitution.setChecked(False)
+        self.rdTransposition.setChecked(False)
+        self.rdPlayfair.setChecked(False)
+        self.rdEnigma.setChecked(False)
+        self.graphPerformance.clear()
+        self.graphMemoryUsage.clear()
+        self.graphSecurity.clear()
 
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    Modern_Old_MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_Modern_Old_MainWindow()
-    ui.setupUi(Modern_Old_MainWindow)
-    Modern_Old_MainWindow.show()
-    sys.exit(app.exec_())
+# if __name__ == "__main__":
+#     import sys
+#     app = QtWidgets.QApplication(sys.argv)
+#     Modern_Old_MainWindow = QtWidgets.QMainWindow()
+#     ui = Ui_Modern_Old_MainWindow()
+#     ui.setupUi(Modern_Old_MainWindow)
+#     Modern_Old_MainWindow.show()
+#     sys.exit(app.exec_())
