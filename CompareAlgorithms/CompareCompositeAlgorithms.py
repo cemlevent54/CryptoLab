@@ -6,6 +6,16 @@ from collections import Counter
 import tracemalloc
 import math
 
+from Helpers.FormHelper import FormHelper
+from Helpers.MeasureFrequencyHelper import MeasureFrequencyHelper
+from Helpers.MeasureMemoryUsageHelper import MeasureMemoryUsageHelper
+from Helpers.MeasurePerformanceHelper import MeasurePerformanceHelper
+
+form_helper = FormHelper()
+measure_frequency_helper = MeasureFrequencyHelper()
+measure_memory_usage_helper = MeasureMemoryUsageHelper()
+measure_performance_helper = MeasurePerformanceHelper()
+
 class CompositeAlgorithmComparator():
     def __init__(self,algo1,algo2):
         self.algo1 = algo1
@@ -20,23 +30,7 @@ class CompositeAlgorithmComparator():
         :param iterations: Number of times the algorithm is executed.
         :return: Average execution time in seconds.
         """
-        total_time = 0
-        iterations = 10
-        for _ in range(iterations):
-            # Başlangıç zamanını al
-            start_time = time.perf_counter()
-            
-            # Şifreleme işlemini gerçekleştir
-            algo(data)
-            
-            # Bitiş zamanını al
-            end_time = time.perf_counter()
-            
-            # Toplam süreyi hesapla
-            total_time += (end_time - start_time)
-        
-        # Ortalama süreyi döndür
-        return total_time / iterations
+        return measure_performance_helper.measure_performance(algo,data,10)
     
     def frequency_analysis(self, output):
         """
@@ -45,18 +39,7 @@ class CompositeAlgorithmComparator():
         :param output: Output string (or byte output) of the encryption algorithm.
         :return: Shannon Entropy value.
         """
-        if not output:
-            return 0
-        
-        freq = Counter(output)
-        total = len(output)
-        entropy = 0
-        
-        for count in freq.values():
-            probability = count / total
-            entropy -= probability * math.log2(probability)
-        
-        return entropy
+        return measure_frequency_helper.calculate_shannon_entropy(output)
     
     def memory_usage(self, algo, data):
         """
@@ -65,18 +48,7 @@ class CompositeAlgorithmComparator():
         :param data: Input data for the algorithm.
         :return: Peak memory usage in kilobytes.
         """
-        tracemalloc.start()
-        # Isınma aşaması (warm-up phase)
-        algo(data)
-        
-        tracemalloc.reset_peak()  # Bellek ölçümlerini sıfırla
-        algo(data)  # Algoritmayı çalıştır
-        current, peak = tracemalloc.get_traced_memory()
-        tracemalloc.stop()
-
-        memory_used = peak / 1024  # Zirve bellek kullanımını KB cinsine çevir
-        # print(f"Peak Memory used (with warm-up): {memory_used:.3f} KB")
-        return memory_used
+        return measure_memory_usage_helper.memory_usage(algo,data)
     
     
     def compare_algorithms(self, data,key_space):
@@ -117,65 +89,4 @@ class CompositeAlgorithmComparator():
         return results
         
      
-    def plot_performance(self,results):
-        """
-        Plots the performance comparison of the algorithms.
-        :param results: Dictionary of comparison results.
-        """
-        plt.figure(figsize=(6, 4))
-        plt.bar(["Algorithm 1", "Algorithm 2"], 
-                [results["algo1_performance"], results["algo2_performance"]], 
-                color=['blue', 'orange'])
-        plt.title("Performance Comparison")
-        plt.ylabel("Execution Time (seconds)")
-        plt.xlabel("Algorithms")
-        plt.tight_layout()
-        plt.show()
     
-    def plot_frequency(self,results):
-        """
-        Plots the frequency comparison of the algorithms.
-        :param results: Dictionary of comparison results.
-        """
-        plt.figure(figsize=(6, 4))
-        plt.bar(["Algorithm 1", "Algorithm 2"], 
-                [results["algo1_frequency"], results["algo2_frequency"]], 
-                color=['green', 'purple'])
-        plt.title("Frequency Analysis Comparison")
-        plt.ylabel("Frequency Score")
-        plt.xlabel("Algorithms")
-        plt.tight_layout()
-        plt.show()
-    
-    def plot_memory(self,results):
-        """
-        Plots the memory usage comparison of the algorithms in KB with .10f format.
-        :param results: Dictionary of comparison results.
-        """
-        # Algoritmaların bellek kullanım değerlerini alın
-        memory_algo1 = results["algo1_memory"]
-        memory_algo2 = results["algo2_memory"]
-
-        # Grafikte gösterilecek etiketleri ayarla (kilobayt cinsinden .10f formatında)
-        labels = [f"{memory_algo1:.10f} KB", f"{memory_algo2:.10f} KB"]
-
-        # Grafik oluşturma
-        plt.figure(figsize=(6, 4))
-        bars = plt.bar(["Algorithm 1", "Algorithm 2"], [memory_algo1, memory_algo2], color=['magenta', 'yellow'], alpha=0.8)
-        plt.title("Memory Usage Comparison (KB)")
-        plt.ylabel("Memory Usage (KB)")
-        plt.xlabel("Algorithms")
-        plt.tight_layout()
-
-        # Çubukların üstüne bellek kullanım değerlerini ekle
-        for bar, label in zip(bars, labels):
-            plt.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.1, label, ha='center', va='bottom')
-
-        # Grafiği göster
-        plt.show()
-    
-    def plot_results(self,results):
-        pass
-    
-    
-

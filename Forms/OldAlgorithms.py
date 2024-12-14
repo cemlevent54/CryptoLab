@@ -57,14 +57,14 @@ class Ui_Old_Encryption_MainWindow(object):
         self.rdCaesar1.setChecked(False)
         
         # radio button for viegerene cipher in groupbox1
-        self.rdViegerene1 = QtWidgets.QRadioButton(self.grpBox1)
-        self.rdViegerene1.setGeometry(QtCore.QRect(30, 90, 161, 20))
+        self.rdVigenere1 = QtWidgets.QRadioButton(self.grpBox1)
+        self.rdVigenere1.setGeometry(QtCore.QRect(30, 90, 161, 20))
         font = QtGui.QFont()
         font.setFamily("Rockwell")
         font.setPointSize(9)
-        self.rdViegerene1.setFont(font)
-        self.rdViegerene1.setObjectName("rdViegerene1")
-        self.rdViegerene1.setChecked(False)
+        self.rdVigenere1.setFont(font)
+        self.rdVigenere1.setObjectName("rdVigenere1")
+        self.rdVigenere1.setChecked(False)
         
         # radio button for substitution cipher in groupbox1
         self.rdSubstitution1 = QtWidgets.QRadioButton(self.grpBox1)
@@ -133,14 +133,14 @@ class Ui_Old_Encryption_MainWindow(object):
         self.rdCaesar2.setChecked(False)
         
         # radio button for viegerene cipher in groupbox2
-        self.rdViegerene2 = QtWidgets.QRadioButton(self.grpBox2)
-        self.rdViegerene2.setGeometry(QtCore.QRect(30, 90, 161, 20))
+        self.rdVigenere2 = QtWidgets.QRadioButton(self.grpBox2)
+        self.rdVigenere2.setGeometry(QtCore.QRect(30, 90, 161, 20))
         font = QtGui.QFont()
         font.setFamily("Rockwell")
         font.setPointSize(9)
-        self.rdViegerene2.setFont(font)
-        self.rdViegerene2.setObjectName("rdViegerene2")
-        self.rdViegerene2.setChecked(False)
+        self.rdVigenere2.setFont(font)
+        self.rdVigenere2.setObjectName("rdVigenere2")
+        self.rdVigenere2.setChecked(False)
         
         # radio button for substitution cipher in groupbox2
         self.rdSubstitution2 = QtWidgets.QRadioButton(self.grpBox2)
@@ -317,14 +317,14 @@ class Ui_Old_Encryption_MainWindow(object):
         self.label.setText(_translate("MainWindow", "Comparison of Old Encryption Algorithms"))
         self.grpBox1.setTitle(_translate("MainWindow", "Select Algorithm 1 to compare(for input, choose your function here)"))
         self.rdCaesar1.setText(_translate("MainWindow", "Caesar Cipher"))
-        self.rdViegerene1.setText(_translate("MainWindow", "Viegerene Cipher"))
+        self.rdVigenere1.setText(_translate("MainWindow", "Vigenere Cipher"))
         self.rdSubstitution1.setText(_translate("MainWindow", "Substitution Cipher"))
         self.rdTransposition1.setText(_translate("MainWindow", "Transposition Cipher"))
         self.rdPlayfair1.setText(_translate("MainWindow", "Playfair Cipher"))
         self.rdEnigma1.setText(_translate("MainWindow", "Enigma Machine"))
         self.grpBox2.setTitle(_translate("MainWindow", "Select Algorithm 2 to compare"))
         self.rdCaesar2.setText(_translate("MainWindow", "Caesar Cipher"))
-        self.rdViegerene2.setText(_translate("MainWindow", "Viegerene Cipher"))
+        self.rdVigenere2.setText(_translate("MainWindow", "Vigenere Cipher"))
         self.rdSubstitution2.setText(_translate("MainWindow", "Substitution Cipher"))
         self.rdTransposition2.setText(_translate("MainWindow", "Transposition Cipher"))
         self.rdPlayfair2.setText(_translate("MainWindow", "Playfair Cipher"))
@@ -339,14 +339,14 @@ class Ui_Old_Encryption_MainWindow(object):
      
     def reset_form(self):
         self.rdCaesar1.setChecked(False)
-        self.rdViegerene1.setChecked(False)
+        self.rdVigenere1.setChecked(False)
         self.rdSubstitution1.setChecked(False)
         self.rdTransposition1.setChecked(False)
         self.rdPlayfair1.setChecked(False)
         self.rdEnigma1.setChecked(False)
         
         self.rdCaesar2.setChecked(False)
-        self.rdViegerene2.setChecked(False)
+        self.rdVigenere2.setChecked(False)
         self.rdSubstitution2.setChecked(False)
         self.rdTransposition2.setChecked(False)
         self.rdPlayfair2.setChecked(False)

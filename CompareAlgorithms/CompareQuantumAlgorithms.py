@@ -6,6 +6,16 @@ from collections import Counter
 import tracemalloc
 import math
 
+from Helpers.FormHelper import FormHelper
+from Helpers.MeasureFrequencyHelper import MeasureFrequencyHelper
+from Helpers.MeasureMemoryUsageHelper import MeasureMemoryUsageHelper
+from Helpers.MeasurePerformanceHelper import MeasurePerformanceHelper
+
+form_helper = FormHelper()
+measure_frequency_helper = MeasureFrequencyHelper()
+measure_memory_usage_helper = MeasureMemoryUsageHelper()
+measure_performance_helper = MeasurePerformanceHelper()
+
 class QuantumAlgorithmComparator():
     def __init__(self,algo1,algo2):
         self.algo1 = algo1
@@ -20,23 +30,7 @@ class QuantumAlgorithmComparator():
         :param iterations: Number of times the algorithm is executed.
         :return: Average execution time in seconds.
         """
-        total_time = 0
-        iterations = 10
-        for _ in range(iterations):
-            # Başlangıç zamanını al
-            start_time = time.perf_counter()
-            
-            # Şifreleme işlemini gerçekleştir
-            algo(data)
-            
-            # Bitiş zamanını al
-            end_time = time.perf_counter()
-            
-            # Toplam süreyi hesapla
-            total_time += (end_time - start_time)
-        
-        # Ortalama süreyi döndür
-        return total_time / iterations
+        return measure_performance_helper.measure_performance(algo, data,10)
     
     def frequency_analysis(self, output):
         """
@@ -45,18 +39,7 @@ class QuantumAlgorithmComparator():
         :param output: Output string (or byte output) of the encryption algorithm.
         :return: Shannon Entropy value.
         """
-        if not output:
-            return 0
-        
-        freq = Counter(output)
-        total = len(output)
-        entropy = 0
-        
-        for count in freq.values():
-            probability = count / total
-            entropy -= probability * math.log2(probability)
-        
-        return entropy
+        return measure_frequency_helper.calculate_shannon_entropy(output)
     
     def memory_usage(self,algo,data):
         """
@@ -65,18 +48,7 @@ class QuantumAlgorithmComparator():
         :param data: Input data for the algorithm.
         :return: Peak memory usage in kilobytes.
         """
-        tracemalloc.start()
-        # Isınma aşaması (warm-up phase)
-        algo(data)
-        
-        tracemalloc.reset_peak()  # Bellek ölçümlerini sıfırla
-        algo(data)  # Algoritmayı çalıştır
-        current, peak = tracemalloc.get_traced_memory()
-        tracemalloc.stop()
-
-        memory_used = peak / 1024  # Zirve bellek kullanımını KB cinsine çevir
-        # print(f"Peak Memory used (with warm-up): {memory_used:.3f} KB")
-        return memory_used
+        return measure_memory_usage_helper.memory_usage(algo, data)
     
     def compare_algorithms(self,data,key_space):
         results = {}

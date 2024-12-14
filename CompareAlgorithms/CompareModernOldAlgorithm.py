@@ -10,6 +10,16 @@ from Crypto.Cipher import DES3
 from AsymmetricAlgorithms.AsymmetricEncryptionAlgorithms import AsymmetricEncryptionAlgorithms
 from SymmetricAlgorithms.SymmetricEncryptionAlgorithms import SymmetricEncryptionAlgorithms
 
+from Helpers.FormHelper import FormHelper
+from Helpers.MeasureFrequencyHelper import MeasureFrequencyHelper
+from Helpers.MeasureMemoryUsageHelper import MeasureMemoryUsageHelper
+from Helpers.MeasurePerformanceHelper import MeasurePerformanceHelper
+
+form_helper = FormHelper()
+measure_frequency_helper = MeasureFrequencyHelper()
+measure_memory_usage_helper = MeasureMemoryUsageHelper()
+measure_performance_helper = MeasurePerformanceHelper()
+
 class ModernOldComparator():
     def __init__(self,modern_algo,old_algo):
         self.modern_algo = modern_algo
@@ -18,16 +28,7 @@ class ModernOldComparator():
     def measure_performance_for_modern_algo(self,data):
         algo = self.modern_algo
         print(f"algo: {algo}")
-        total_time = 0
-        iterations = 3
-        
-        for _ in range(iterations):
-            start_time = time.perf_counter()
-            algo(data)
-            end_time = time.perf_counter()
-            total_time += (end_time - start_time)
-        
-        return total_time / iterations
+        return measure_performance_helper.measure_performance(algo,data,10)
     
     def measure_performance_for_old_algo(self,data):
         algo = self.old_algo
@@ -36,89 +37,36 @@ class ModernOldComparator():
         total_time = 0
         iterations = 3
         
-        for _ in range(iterations):
-            start_time = time.perf_counter()
-            algo(data)
-            end_time = time.perf_counter()
-            total_time += (end_time - start_time)
-        
-        return total_time / iterations
+        return measure_performance_helper.measure_performance(algo,data,3)
     
     def measure_frequency_analysis_for_modern_algo(self, output):
         """
         Modern algoritmalar için Shannon Entropy hesaplama
         """
-        return self._calculate_shannon_entropy(output)
+        return measure_frequency_helper._calculate_shannon_entropy(output)
 
     def measure_frequency_analysis_for_old_algo(self, output):
         """
         Eski algoritmalar için Shannon Entropy hesaplama
         """
-        return self._calculate_shannon_entropy(output)
+        return measure_frequency_helper._calculate_shannon_entropy(output)
 
-    #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
+   
 
 
-    def _calculate_shannon_entropy(self, output):
-        """
-        Shannon Entropy hesaplama algoritması
-        :param output: Hesaplanacak veri (string veya bytes)
-        :return: float, Shannon entropy değeri
-        """
-        if not output:
-            return 0.0  # Boş veri için entropy 0 döner
 
-        # Bayt dizisine çevirme
-        if isinstance(output, str):
-            output = output.encode('utf-8')  # String ise bayt dizisine dönüştür
-
-        m = len(output)  # Toplam eleman sayısı
-        bases = Counter(output)  # Frekans hesaplama
-
-        shannon_entropy_value = 0.0
-        for base in bases:
-            n_i = bases[base]  # Eleman sayısı
-            if isinstance(n_i, (int, float)):  # Sayısal kontrol
-                p_i = n_i / float(m)  # Olasılık hesaplama
-                entropy_i = p_i * (math.log2(p_i))  # Entropy değeri
-                shannon_entropy_value += entropy_i
-
-        return shannon_entropy_value * -1
+    
 
     
     def measure_memory_usage_for_modern_algo(self,data):
         algo = self.modern_algo
         
-        tracemalloc.start()
-        # Isınma aşaması (warm-up phase)
-        algo(data)
-        
-        tracemalloc.reset_peak()  # Bellek ölçümlerini sıfırla
-        algo(data)  # Algoritmayı çalıştır
-        current, peak = tracemalloc.get_traced_memory()
-        tracemalloc.stop()
-
-        memory_used = peak / 1024  # Zirve bellek kullanımını KB cinsine çevir
-        # print(f"Peak Memory used (with warm-up): {memory_used:.3f} KB")
-        return memory_used
+        return measure_memory_usage_helper.memory_usage(algo,data)
     
     def measure_memory_usage_for_old_algo(self,data):
         algo = self.old_algo
         
-        tracemalloc.start()
-        # Isınma aşaması (warm-up phase)
-        algo(data)
-        
-        tracemalloc.reset_peak()  # Bellek ölçümlerini sıfırla
-        algo(data)  # Algoritmayı çalıştır
-        current, peak = tracemalloc.get_traced_memory()
-        tracemalloc.stop()
-
-        memory_used = peak / 1024  # Zirve bellek kullanımını KB cinsine çevir
-        # print(f"Peak Memory used (with warm-up): {memory_used:.3f} KB")
-        return memory_used
+        return measure_memory_usage_helper.memory_usage(algo,data)
     
     def compare_algorithms(self,data):
         results = {}
