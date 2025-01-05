@@ -43,13 +43,13 @@ The project is modular and consists of the following components:
 2. Install dependencies:
 
    ```bash
-    pip install pycryptodome # Şifreleme ve hash işlemleri için.
-    pip install cryptography # Modern asimetrik şifreleme (RSA, DSA, EC) için.
-    pip install matplotlib   # Grafik ve veri görselleştirme için.
-    pip install sympy        # Matematiksel hesaplamalar için.
-    pip install pyqt5        # PyQt5 tabanlı GUI geliştirme için.
-    pip install argon2-cffi  # Argon2 şifreleme algoritması için.
-    pip install twofish      # Twofish şifreleme algoritması için.
+    pip install pycryptodome 
+    pip install cryptography
+    pip install matplotlib  
+    pip install sympy        
+    pip install pyqt5       
+    pip install argon2-cffi  
+    pip install twofish      
    ```
 
 3. Run the application:
